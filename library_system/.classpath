@@ -19,5 +19,6 @@
 	<classpathentry kind="lib" path="F:/My File/JAVA/mysql-connector-j-8.0.31/mysql-connector-j-8.0.31.jar"/>
 	<classpathentry kind="lib" path="F:/My File/JAVA/windowBuilder/artifacts.jar"/>
 	<classpathentry kind="lib" path="F:/My File/JAVA/windowBuilder/content.jar"/>
+	<classpathentry kind="lib" path="F:/My File/JAVA/rs2xml.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
