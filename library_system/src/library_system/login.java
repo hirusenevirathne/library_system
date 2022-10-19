@@ -3,10 +3,26 @@ package library_system;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+
+import java.awt.Color;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.ImageIcon;
+import java.awt.Font;
+import java.sql.Connection;
+
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class login {
 
 	private JFrame frame;
+	private JTextField textFieldusername;
+	private JTextField textFieldpassword;
 
 	/**
 	 * Launch the application.
@@ -30,8 +46,15 @@ public class login {
 	/**
 	 * Create the application.
 	 */
+	
+	Connection connection = null; //create a connection object first
+	 
+	
+	
 	public login() {
 		initialize();
+		connection = sqlConnection.dbConnector();
+		JOptionPane.showMessageDialog(null, "Connect to the Database Sucessfully !");
 	}
 
 	/**
@@ -39,8 +62,85 @@ public class login {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 1024, 640);
+		frame.setBounds(100, 100, 1297, 734);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+		
+		JPanel background_panel = new JPanel();
+		background_panel.setBorder(null);
+		background_panel.setBackground(new Color(255, 255, 255));
+		background_panel.setBounds(0, 0, 1281, 695);
+		frame.getContentPane().add(background_panel);
+		background_panel.setLayout(null);
+		
+		JPanel topblue_panel = new JPanel();
+		topblue_panel.setBackground(new Color(0, 153, 255));
+		topblue_panel.setBounds(0, 0, 1281, 134);
+		background_panel.add(topblue_panel);
+		topblue_panel.setLayout(null);
+		
+		JLabel lbllibrarysystem = new JLabel("Library Management System");
+		lbllibrarysystem.setForeground(new Color(255, 255, 255));
+		lbllibrarysystem.setFont(new Font("Times New Roman", Font.BOLD, 40));
+		lbllibrarysystem.setBounds(49, 0, 624, 99);
+		topblue_panel.add(lbllibrarysystem);
+		
+		JLabel lblimage1 = new JLabel("");
+		lblimage1.setForeground(new Color(255, 255, 255));
+		lblimage1.setBackground(new Color(255, 255, 255));
+		lblimage1.setIcon(new ImageIcon(login.class.getResource("/main/images/01.01.jpg")));
+		lblimage1.setBounds(30, 145, 290, 515);
+		background_panel.add(lblimage1);
+		
+		JLabel lblLogin = new JLabel("Login");
+		lblLogin.setFont(new Font("Tahoma", Font.BOLD, 30));
+		lblLogin.setBounds(809, 156, 130, 75);
+		background_panel.add(lblLogin);
+		
+		JLabel lblinfoText = new JLabel("Please enter your loging and password");
+		lblinfoText.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblinfoText.setBounds(740, 214, 342, 27);
+		background_panel.add(lblinfoText);
+		
+		textFieldusername = new JTextField();
+		textFieldusername.setForeground(new Color(255, 255, 255));
+		textFieldusername.setBounds(688, 293, 327, 38);
+		background_panel.add(textFieldusername);
+		textFieldusername.setColumns(10);
+		
+		textFieldpassword = new JPasswordField();
+		textFieldpassword.setForeground(Color.WHITE);
+		textFieldpassword.setColumns(10);
+		textFieldpassword.setBounds(688, 389, 327, 38);
+		background_panel.add(textFieldpassword);
+		
+		JLabel lblusername = new JLabel("Username");
+		lblusername.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblusername.setBounds(688, 275, 108, 14);
+		background_panel.add(lblusername);
+		
+		JLabel lblPassword = new JLabel("Password");
+		lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblPassword.setBounds(688, 374, 108, 14);
+		background_panel.add(lblPassword);
+		
+		JButton btnNewButton = new JButton("Login");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				
+			}
+		});
+		btnNewButton.setForeground(new Color(0, 0, 0));
+		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnNewButton.setBounds(688, 491, 327, 38);
+		background_panel.add(btnNewButton);
+		
+		JButton btnCancel = new JButton("Cancel");
+		btnCancel.setForeground(Color.BLACK);
+		btnCancel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnCancel.setBounds(738, 574, 232, 38);
+		background_panel.add(btnCancel);
 	}
-
 }
