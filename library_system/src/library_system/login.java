@@ -12,8 +12,13 @@ import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import java.awt.Font;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 import javax.swing.JTextField;
+
+import com.mysql.cj.protocol.Resultset;
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -23,7 +28,13 @@ public class login {
 	private JFrame frame;
 	private JTextField textFieldusername;
 	private JTextField textFieldpassword;
-
+	
+	
+	
+	void clearform() {
+		textFieldusername.setText("");
+		textFieldpassword.setText("");
+	}
 	/**
 	 * Launch the application.
 	 * 
@@ -54,7 +65,7 @@ public class login {
 	public login() {
 		initialize();
 		connection = sqlConnection.dbConnector();
-		JOptionPane.showMessageDialog(null, "Connect to the Database Sucessfully !");
+		//JOptionPane.showMessageDialog(null, "Connect to the Database Sucessfully !");
 	}
 
 	/**
@@ -103,13 +114,13 @@ public class login {
 		background_panel.add(lblinfoText);
 		
 		textFieldusername = new JTextField();
-		textFieldusername.setForeground(new Color(255, 255, 255));
+		textFieldusername.setForeground(Color.BLACK);
 		textFieldusername.setBounds(688, 293, 327, 38);
 		background_panel.add(textFieldusername);
 		textFieldusername.setColumns(10);
 		
 		textFieldpassword = new JPasswordField();
-		textFieldpassword.setForeground(Color.WHITE);
+		textFieldpassword.setForeground(Color.BLACK);
 		textFieldpassword.setColumns(10);
 		textFieldpassword.setBounds(688, 389, 327, 38);
 		background_panel.add(textFieldpassword);
@@ -128,16 +139,50 @@ public class login {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				
+				try {
+					
+					String queryString = "SELECT * FROM admin WHERE username = ? AND password = ? "; //SQL Query
+					PreparedStatement pStatement = connection.prepareStatement(queryString);
+					pStatement.setString(1, textFieldusername.getText()); //get the username and add it to the query
+					pStatement.setString(2, textFieldpassword.getText()); //get the password and add it to the query
+					Resultset rsResultset = (Resultset) pStatement.executeQuery(); //type cast and execute query
+					
+					
+					int count = 0;
+					while (((ResultSet) rsResultset).next()) { //check the results and count them
+						count++;
+					}
+					if (count == 1) { //if username and password correct
+						JOptionPane.showMessageDialog(null,"Username And Password is Valid !");
+						clearform();
+					} else if (count > 1) {//if username and password repeat
+						JOptionPane.showMessageDialog(null,"Duplicate Username And Password !");
+					}else {//if username and password incorrect
+						JOptionPane.showMessageDialog(null,"Username And Password is InValid !");
+					}
+					//  ((Connection) rsResultset).close(); //close the connection with database
+					pStatement.close(); //and let ohter method to access it
+					connection.close();
+					
+				} catch (Exception e2) {
+					JOptionPane.showMessageDialog(null, "somthing went wrong Try Again Later !");
+					// TODO: handle exception
+				}
+				}
 				
 			}
-		});
+		);
 		btnNewButton.setForeground(new Color(0, 0, 0));
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnNewButton.setBounds(688, 491, 327, 38);
 		background_panel.add(btnNewButton);
 		
 		JButton btnCancel = new JButton("Cancel");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				clearform();
+			}
+		});
 		btnCancel.setForeground(Color.BLACK);
 		btnCancel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnCancel.setBounds(738, 574, 232, 38);
