@@ -154,7 +154,8 @@ public class login {
 					}
 					if (count == 1) { //if username and password correct
 						JOptionPane.showMessageDialog(null,"Username And Password is Valid !");
-						clearform();
+						home_menu home_men = new home_menu();
+						home_men.setVisible(true);
 					} else if (count > 1) {//if username and password repeat
 						JOptionPane.showMessageDialog(null,"Duplicate Username And Password !");
 					}else {//if username and password incorrect
@@ -164,7 +165,7 @@ public class login {
 					pStatement.close(); //and let ohter method to access it
 					connection.close();
 					
-				} catch (Exception e2) {
+					} catch (Exception e2) {
 					JOptionPane.showMessageDialog(null, "somthing went wrong Try Again Later !");
 					
 				}
