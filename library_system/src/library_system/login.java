@@ -93,7 +93,7 @@ public class login {
 		JLabel lbllibrarysystem = new JLabel("Library Management System");
 		lbllibrarysystem.setForeground(new Color(255, 255, 255));
 		lbllibrarysystem.setFont(new Font("Times New Roman", Font.BOLD, 40));
-		lbllibrarysystem.setBounds(49, 0, 624, 99);
+		lbllibrarysystem.setBounds(34, 0, 624, 99);
 		topblue_panel.add(lbllibrarysystem);
 		
 		JLabel lblimage1 = new JLabel("");

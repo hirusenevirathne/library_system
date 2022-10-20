@@ -16,6 +16,8 @@ import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class home_menu extends JFrame {
 
@@ -38,6 +40,16 @@ public class home_menu extends JFrame {
 		});
 	}
 
+	
+	
+	public void setColouronMouse( JPanel panel) { //create a method to change button color when mouse is on it
+		panel.setBackground(new java.awt.Color(115, 163, 239));		
+	}
+	public void reSetColouronMouse( JPanel panel) {//create a method to change original button color when mouse is not on it
+		panel.setBackground(SystemColor.controlHighlight);		
+	}
+	
+	
 	/**
 	 * Create the frame.
 	 */
@@ -73,7 +85,24 @@ public class home_menu extends JFrame {
 		btnLogOut.setBounds(1182, 21, 89, 23);
 		topblue_panel.add(btnLogOut);
 		
+		JLabel lbllibrarysystem = new JLabel("Library Management System");
+		lbllibrarysystem.setForeground(Color.WHITE);
+		lbllibrarysystem.setFont(new Font("Times New Roman", Font.BOLD, 40));
+		lbllibrarysystem.setBounds(34, 0, 624, 99);
+		topblue_panel.add(lbllibrarysystem);
+		
 		JPanel homeButton = new JPanel();
+		homeButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				setColouronMouse(homeButton);
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				reSetColouronMouse(homeButton);
+			}
+		});
 		homeButton.setBackground(SystemColor.controlHighlight);
 		homeButton.setBounds(120, 200, 164, 143);
 		backgroundpanel.add(homeButton);
@@ -108,6 +137,16 @@ public class home_menu extends JFrame {
 		homeButton.setLayout(gl_homeButton);
 		
 		JPanel bookButton = new JPanel();
+		bookButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				setColouronMouse(bookButton);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				reSetColouronMouse(bookButton);
+			}
+		});
 		bookButton.setBackground(SystemColor.controlHighlight);
 		bookButton.setBounds(420, 200, 164, 143);
 		backgroundpanel.add(bookButton);
@@ -152,6 +191,16 @@ public class home_menu extends JFrame {
 		bookButton.setLayout(gl_bookButton);
 		
 		JPanel memberButton = new JPanel();
+		memberButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				setColouronMouse(memberButton);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				reSetColouronMouse(memberButton);
+			}
+		});
 		memberButton.setBackground(SystemColor.controlHighlight);
 		memberButton.setBounds(713, 200, 164, 143);
 		backgroundpanel.add(memberButton);
@@ -193,6 +242,16 @@ public class home_menu extends JFrame {
 		memberButton.setLayout(gl_memberButton);
 		
 		JPanel searchButton = new JPanel();
+		searchButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				setColouronMouse(searchButton);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				reSetColouronMouse(searchButton);
+			}
+		});
 		searchButton.setBackground(SystemColor.controlHighlight);
 		searchButton.setBounds(987, 200, 164, 143);
 		backgroundpanel.add(searchButton);
@@ -233,6 +292,16 @@ public class home_menu extends JFrame {
 		searchButton.setLayout(gl_searchButton);
 		
 		JPanel updateButton = new JPanel();
+		updateButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				setColouronMouse(updateButton);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				reSetColouronMouse(updateButton);
+			}
+		});
 		updateButton.setBackground(SystemColor.controlHighlight);
 		updateButton.setBounds(987, 427, 164, 143);
 		backgroundpanel.add(updateButton);
@@ -273,6 +342,16 @@ public class home_menu extends JFrame {
 		updateButton.setLayout(gl_updateButton);
 		
 		JPanel deleteButton = new JPanel();
+		deleteButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				setColouronMouse(deleteButton);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				reSetColouronMouse(deleteButton);
+			}
+		});
 		deleteButton.setBackground(SystemColor.controlHighlight);
 		deleteButton.setBounds(713, 427, 164, 143);
 		backgroundpanel.add(deleteButton);
@@ -313,6 +392,16 @@ public class home_menu extends JFrame {
 		deleteButton.setLayout(gl_deleteButton);
 		
 		JPanel receivebookButton = new JPanel();
+		receivebookButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				setColouronMouse(receivebookButton);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				reSetColouronMouse(receivebookButton);
+			}
+		});
 		receivebookButton.setBackground(SystemColor.controlHighlight);
 		receivebookButton.setBounds(420, 427, 164, 143);
 		backgroundpanel.add(receivebookButton);
@@ -354,6 +443,16 @@ public class home_menu extends JFrame {
 		receivebookButton.setLayout(gl_receivebookButton);
 		
 		JPanel lendbookButton = new JPanel();
+		lendbookButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				setColouronMouse(lendbookButton);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				reSetColouronMouse(lendbookButton);
+			}
+		});
 		lendbookButton.setBackground(SystemColor.controlHighlight);
 		lendbookButton.setBounds(120, 427, 164, 143);
 		backgroundpanel.add(lendbookButton);

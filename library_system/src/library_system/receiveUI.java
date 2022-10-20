@@ -6,6 +6,8 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
+import java.awt.Font;
 
 public class receiveUI extends JFrame {
 
@@ -49,6 +51,12 @@ public class receiveUI extends JFrame {
 		topblue_panel.setBounds(0, 0, 1281, 134);
 		backgroundpanel.add(topblue_panel);
 		topblue_panel.setLayout(null);
+		
+		JLabel lbllibrarysystem = new JLabel("Library Management System");
+		lbllibrarysystem.setForeground(Color.WHITE);
+		lbllibrarysystem.setFont(new Font("Times New Roman", Font.BOLD, 40));
+		lbllibrarysystem.setBounds(34, 0, 624, 99);
+		topblue_panel.add(lbllibrarysystem);
 	}
 
 }
