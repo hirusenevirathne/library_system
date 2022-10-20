@@ -75,11 +75,16 @@ public class home_menu extends JFrame {
 		topblue_panel.setLayout(null);
 		
 		JButton btnLogOut = new JButton("Log Out");
+		btnLogOut.addMouseListener(new MouseAdapter() {
+			
+		});
 		btnLogOut.setForeground(SystemColor.textHighlight);
 		btnLogOut.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnLogOut.setBackground(SystemColor.controlHighlight);
 		btnLogOut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//login logpageLogin = new login(); //create a object with login class
+				//logpageLogin.
 			}
 		});
 		btnLogOut.setBounds(1182, 21, 89, 23);
@@ -94,13 +99,18 @@ public class home_menu extends JFrame {
 		JPanel homeButton = new JPanel();
 		homeButton.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseEntered(MouseEvent e) {
+			public void mouseEntered(MouseEvent e) { //change the button color when mouse on it
 				setColouronMouse(homeButton);
 			}
 			
 			@Override
-			public void mouseExited(MouseEvent e) {
+			public void mouseExited(MouseEvent e) { //change the button color back to normal
 				reSetColouronMouse(homeButton);
+			}
+			@SuppressWarnings("deprecation")
+			@Override
+			public void mousePressed(MouseEvent e) {  //press the home button and go to the home_UI
+				new homeUI().show();
 			}
 		});
 		homeButton.setBackground(SystemColor.controlHighlight);
@@ -145,6 +155,11 @@ public class home_menu extends JFrame {
 			@Override
 			public void mouseExited(MouseEvent e) {
 				reSetColouronMouse(bookButton);
+			}
+			@SuppressWarnings("deprecation")
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				new booksUI().show();
 			}
 		});
 		bookButton.setBackground(SystemColor.controlHighlight);
@@ -200,6 +215,11 @@ public class home_menu extends JFrame {
 			public void mouseExited(MouseEvent e) {
 				reSetColouronMouse(memberButton);
 			}
+			@SuppressWarnings("deprecation")
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				new memberUI().show();
+			}
 		});
 		memberButton.setBackground(SystemColor.controlHighlight);
 		memberButton.setBounds(713, 200, 164, 143);
@@ -251,6 +271,11 @@ public class home_menu extends JFrame {
 			public void mouseExited(MouseEvent e) {
 				reSetColouronMouse(searchButton);
 			}
+			@SuppressWarnings("deprecation")
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				new searchUI().show();
+			}
 		});
 		searchButton.setBackground(SystemColor.controlHighlight);
 		searchButton.setBounds(987, 200, 164, 143);
@@ -300,6 +325,11 @@ public class home_menu extends JFrame {
 			@Override
 			public void mouseExited(MouseEvent e) {
 				reSetColouronMouse(updateButton);
+			}
+			@SuppressWarnings("deprecation")
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				new updateUI().show();
 			}
 		});
 		updateButton.setBackground(SystemColor.controlHighlight);
@@ -351,6 +381,11 @@ public class home_menu extends JFrame {
 			public void mouseExited(MouseEvent e) {
 				reSetColouronMouse(deleteButton);
 			}
+			@SuppressWarnings("deprecation")
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				new deleteUI().show();
+			}
 		});
 		deleteButton.setBackground(SystemColor.controlHighlight);
 		deleteButton.setBounds(713, 427, 164, 143);
@@ -400,6 +435,11 @@ public class home_menu extends JFrame {
 			@Override
 			public void mouseExited(MouseEvent e) {
 				reSetColouronMouse(receivebookButton);
+			}
+			@SuppressWarnings("deprecation")
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				new receiveUI().show();
 			}
 		});
 		receivebookButton.setBackground(SystemColor.controlHighlight);
@@ -451,6 +491,11 @@ public class home_menu extends JFrame {
 			@Override
 			public void mouseExited(MouseEvent e) {
 				reSetColouronMouse(lendbookButton);
+			}
+			@SuppressWarnings("deprecation")
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				new lendbookUI().show();
 			}
 		});
 		lendbookButton.setBackground(SystemColor.controlHighlight);

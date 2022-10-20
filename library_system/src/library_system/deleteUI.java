@@ -2,18 +2,18 @@ package library_system;
 
 import java.awt.Color;
 import java.awt.EventQueue;
-
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class updateUI extends JFrame {
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+public class deleteUI extends JFrame {
 
 	private JPanel contentPane;
 
@@ -24,7 +24,7 @@ public class updateUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					updateUI frame = new updateUI();
+					deleteUI frame = new deleteUI();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -36,7 +36,7 @@ public class updateUI extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public updateUI() {
+	public deleteUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1297, 734);
 		contentPane = new JPanel();
@@ -94,6 +94,9 @@ public class updateUI extends JFrame {
 				lblbackico.setBounds(10, 11, 32, 31);
 				homebtn.add(lblbackico);
 				//Back to Home BUtton ENDS 
+				
+				
+				
 	}
 
 }
