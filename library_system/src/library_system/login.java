@@ -65,7 +65,7 @@ public class login {
 	public login() {
 		initialize();
 		connection = sqlConnection.dbConnector();
-		//JOptionPane.showMessageDialog(null, "Connect to the Database Sucessfully !");
+		JOptionPane.showMessageDialog(null, "Connect to the Database Sucessfully !");
 	}
 
 	/**
