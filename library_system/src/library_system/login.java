@@ -161,12 +161,13 @@ public class login {
 					}else {//if username and password incorrect
 						JOptionPane.showMessageDialog(null,"Username And Password is InValid !");
 					}
-					//  ((Connection) rsResultset).close(); //close the connection with database
-					pStatement.close(); //and let ohter method to access it
-					connection.close();
+					//((Connection) rsResultset).close(); //close the connection with database
+					//pStatement.close(); //and let ohter method to access it
+					//connection.close();
 					
 					} catch (Exception e2) {
 					JOptionPane.showMessageDialog(null, "somthing went wrong Try Again Later !");
+					System.out.println(e2);
 					
 				}
 				}

@@ -6,6 +6,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import com.mysql.cj.x.protobuf.MysqlxConnection.Close;
+
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.GroupLayout;
@@ -21,6 +24,10 @@ import java.awt.event.MouseEvent;
 
 public class home_menu extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JLabel lbldeleteico;
 
@@ -83,6 +90,9 @@ public class home_menu extends JFrame {
 		btnLogOut.setBackground(SystemColor.controlHighlight);
 		btnLogOut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				logout logoutobj = new logout();
+				logoutobj.setVisible(true);
+				
 				//login logpageLogin = new login(); //create a object with login class
 				//logpageLogin.
 			}

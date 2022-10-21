@@ -23,6 +23,10 @@ import com.mysql.cj.protocol.Resultset;
 
 public class logout extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JFrame frame;
 	private JTextField textFieldusername;
 	private JTextField textFieldpassword;
@@ -159,8 +163,8 @@ public class logout extends JFrame {
 						JOptionPane.showMessageDialog(null,"Username And Password is InValid !");
 					}
 					//  ((Connection) rsResultset).close(); //close the connection with database
-					pStatement.close(); //and let ohter method to access it
-					connection.close();
+					//pStatement.close(); //and let ohter method to access it
+					//connection.close();
 					
 				} catch (Exception e2) {
 					JOptionPane.showMessageDialog(null, "somthing went wrong Try Again Later !");
