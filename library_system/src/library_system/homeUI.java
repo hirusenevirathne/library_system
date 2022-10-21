@@ -14,6 +14,8 @@ import net.proteanit.sql.DbUtils;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.SystemColor;
+
+import javax.management.loading.PrivateClassLoader;
 import javax.swing.ImageIcon;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -55,6 +57,31 @@ public class homeUI extends JFrame {
 	}
 	public void reSetColouronMouse( JPanel panel) {//create a method to change original button color when mouse is not on it
 		panel.setBackground(SystemColor.controlHighlight);		
+	}
+	@SuppressWarnings("finally")
+	public String getCount(String tableName ) {
+		
+		//take the book count
+		String count = null;
+		try {
+			String queryString = "SELECT COUNT(*) \r\n"
+					+ "FROM " +tableName+ ";";
+			PreparedStatement pStatement = connection.prepareStatement(queryString);
+			ResultSet rsResultset = pStatement.executeQuery(); 
+			rsResultset.next();
+			count = rsResultset.getString(1);
+			//System.out.println(count);
+			return count;
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}finally {
+			return count;
+		}
+		
+				
+		//end of taking book count
+		
 	}
 	
 	
@@ -155,8 +182,12 @@ public class homeUI extends JFrame {
 					PreparedStatement pStatement = connection.prepareStatement(queryString);
 					ResultSet rsResultset = pStatement.executeQuery(); 
 					table.setModel(DbUtils.resultSetToTableModel(rsResultset));
+					
+					
 					pStatement.close();
 					rsResultset.close();
+					
+					
 					
 				} catch (Exception e2) {
 					System.out.println(e2);
@@ -171,7 +202,10 @@ public class homeUI extends JFrame {
 		total_bookplane.setBackground(SystemColor.controlHighlight);
 		total_bookplane.setLayout(null);
 		
-		JLabel lblbookCount = new JLabel("250");
+		
+		String bookCount = getCount("books"); // take the count of all books in QSL server
+		
+		JLabel lblbookCount = new JLabel(bookCount);
 		lblbookCount.setFont(new Font("Tw Cen MT", Font.BOLD, 32));
 		lblbookCount.setBounds(147, 73, 124, 42);
 		total_bookplane.add(lblbookCount);
@@ -221,7 +255,9 @@ public class homeUI extends JFrame {
 		total_memberplane.setBounds(481, 189, 335, 146);
 		backgroundpanel.add(total_memberplane);
 		
-		JLabel lblmemberCount = new JLabel("250");
+		
+		String memberCount = getCount("members"); // take the count of all books in QSL server
+		JLabel lblmemberCount = new JLabel(memberCount);
 		lblmemberCount.setFont(new Font("Tw Cen MT", Font.BOLD, 32));
 		lblmemberCount.setBounds(142, 73, 124, 42);
 		total_memberplane.add(lblmemberCount);
@@ -272,7 +308,10 @@ public class homeUI extends JFrame {
 		total_lendbookplane.setBounds(906, 189, 335, 146);
 		backgroundpanel.add(total_lendbookplane);
 		
-		JLabel lbllendCOunt = new JLabel("250");
+		
+		
+		String lendCount = getCount("lending"); // take the count of all books in QSL server
+		JLabel lbllendCOunt = new JLabel(lendCount);
 		lbllendCOunt.setFont(new Font("Tw Cen MT", Font.BOLD, 32));
 		lbllendCOunt.setBounds(142, 73, 124, 42);
 		total_lendbookplane.add(lbllendCOunt);
