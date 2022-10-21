@@ -27,6 +27,10 @@ public class logout extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	
 	private JFrame frame;
 	private JTextField textFieldusername;
 	private JTextField textFieldpassword;
@@ -67,7 +71,7 @@ public class logout extends JFrame {
 	public logout() {
 		initialize();
 		connection = sqlConnection.dbConnector();
-		JOptionPane.showMessageDialog(null, "Connect to the Database Sucessfully !");
+		//JOptionPane.showMessageDialog(null, "Connect to the Database Sucessfully !");
 	}
 
 	/**
@@ -101,16 +105,16 @@ public class logout extends JFrame {
 		JLabel lblimage1 = new JLabel("");
 		lblimage1.setForeground(new Color(255, 255, 255));
 		lblimage1.setBackground(new Color(255, 255, 255));
-		lblimage1.setIcon(new ImageIcon(logout.class.getResource("/main/images/01.01.jpg")));
+		lblimage1.setIcon(new ImageIcon(login.class.getResource("/main/images/01.01.jpg")));
 		lblimage1.setBounds(30, 145, 290, 515);
 		background_panel.add(lblimage1);
 		
-		JLabel lbllogout = new JLabel("Login");
-		lbllogout.setFont(new Font("Tahoma", Font.BOLD, 30));
-		lbllogout.setBounds(809, 156, 130, 75);
-		background_panel.add(lbllogout);
+		JLabel lblLogin = new JLabel("Login");
+		lblLogin.setFont(new Font("Tahoma", Font.BOLD, 30));
+		lblLogin.setBounds(809, 156, 130, 75);
+		background_panel.add(lblLogin);
 		
-		JLabel lblinfoText = new JLabel("Please enter your login and password");
+		JLabel lblinfoText = new JLabel("Please enter your loging and password");
 		lblinfoText.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblinfoText.setBounds(740, 214, 342, 27);
 		background_panel.add(lblinfoText);
@@ -155,19 +159,22 @@ public class logout extends JFrame {
 						count++;
 					}
 					if (count == 1) { //if username and password correct
-						JOptionPane.showMessageDialog(null,"Username And Password is Valid !");
-						clearform();
+						//JOptionPane.showMessageDialog(null,"Username And Password is Valid !");
+						home_menu home_men = new home_menu();
+						home_men.setVisible(true);
+						//((Connection) rsResultset).close(); //close the connection with database
+						pStatement.close(); //and let ohter method to access it
+						connection.close();
 					} else if (count > 1) {//if username and password repeat
 						JOptionPane.showMessageDialog(null,"Duplicate Username And Password !");
 					}else {//if username and password incorrect
 						JOptionPane.showMessageDialog(null,"Username And Password is InValid !");
 					}
-					//  ((Connection) rsResultset).close(); //close the connection with database
-					//pStatement.close(); //and let ohter method to access it
-					//connection.close();
 					
-				} catch (Exception e2) {
+					
+					} catch (Exception e2) {
 					JOptionPane.showMessageDialog(null, "somthing went wrong Try Again Later !");
+					System.out.println(e2);
 					
 				}
 				}
