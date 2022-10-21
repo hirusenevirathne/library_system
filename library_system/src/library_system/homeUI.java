@@ -141,12 +141,26 @@ public class homeUI extends JFrame {
 			public void mouseClicked(MouseEvent e) { //load the data from the sql server and show it in jtabale
 				try {
 					
-					String queryString = "SELECT book_ID AS \"Book ID\",A_F_name AS \"Author First Name\",A_L_name AS \"Author Last Name\",B_name AS \"Book Name\",publish_year AS \"Published Year\",Other_details AS \"Other Details\",state AS \"Status\"FROM books JOIN author ON books.Author_ID = author.Author_id ;";
+					String queryString = "SELECT \r\n"
+							+ "book_ID AS \"Book ID\",\r\n"
+							+ "A_F_name AS \"Author First Name\",\r\n"
+							+ "A_L_name AS \"Author Last Name\",\r\n"
+							+ "B_name AS \"Book Name\",\r\n"
+							+ "publish_year AS \"Published Year\",\r\n"
+							+ "Other_details AS \"Other Details\",\r\n"
+							+ "state AS \"Status\"\r\n"
+							+ "FROM books\r\n"
+							+ "JOIN author\r\n"
+							+ "	ON books.Author_ID = author.Author_id ;";
 					PreparedStatement pStatement = connection.prepareStatement(queryString);
 					ResultSet rsResultset = pStatement.executeQuery(); 
 					table.setModel(DbUtils.resultSetToTableModel(rsResultset));
+					pStatement.close();
+					rsResultset.close();
 					
 				} catch (Exception e2) {
+					System.out.println(e2);
+					System.out.println("thiss error in book button");
 					// TODO: handle exception
 				}
 				
@@ -168,6 +182,40 @@ public class homeUI extends JFrame {
 		total_bookplane.add(lbltotbooks);
 		
 		JPanel total_memberplane = new JPanel();
+		total_memberplane.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) { //change the button color when mouse on it
+				setColouronMouse(total_memberplane);
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) { //change the button color back to normal
+				reSetColouronMouse(total_memberplane);
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) { //load the data from the sql server and show it in jtabale
+				try {
+					
+					String queryString = "SELECT \r\n"
+							+ "Mem_ID AS \"Member ID\",\r\n"
+							+ "F_name AS \"First Name\",\r\n"
+							+ "L_name AS \"Last Name\",\r\n"
+							+ "Contact_no \"Contact No\"\r\n"
+							+ "FROM members;";
+					PreparedStatement pStatement = connection.prepareStatement(queryString);
+					ResultSet rsResultset = pStatement.executeQuery(); 
+					table.setModel(DbUtils.resultSetToTableModel(rsResultset));
+					pStatement.close();
+					rsResultset.close();
+					
+				} catch (Exception e2) {
+					System.out.println(e2);
+					System.out.println("thiss error in book button");
+					// TODO: handle exception
+				}
+				
+			}
+		});
 		total_memberplane.setLayout(null);
 		total_memberplane.setBackground(SystemColor.controlHighlight);
 		total_memberplane.setBounds(481, 189, 335, 146);
@@ -184,6 +232,41 @@ public class homeUI extends JFrame {
 		total_memberplane.add(lbltotMembers);
 		
 		JPanel total_lendbookplane = new JPanel();
+		total_lendbookplane.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) { //change the button color when mouse on it
+				setColouronMouse(total_lendbookplane);
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) { //change the button color back to normal
+				reSetColouronMouse(total_lendbookplane);
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) { //load the data from the sql server and show it in jtabale
+				try {
+					
+					String queryString = "SELECT \r\n"
+							+ "book_ID AS \"Book ID\",\r\n"
+							+ "Mem_ID AS \"Member ID\",\r\n"
+							+ "lend_date AS \"Lend Date\",\r\n"
+							+ "resubmit_date AS \"Resubmit Date\"\r\n"
+							+ "FROM lending;";
+					PreparedStatement pStatement = connection.prepareStatement(queryString);
+					ResultSet rsResultset = pStatement.executeQuery(); 
+					table.setModel(DbUtils.resultSetToTableModel(rsResultset));
+					pStatement.close();
+					rsResultset.close();
+					
+					
+				} catch (Exception e2) {
+					System.out.println(e2);
+					System.out.println("thiss error in book button");
+					// TODO: handle exception
+				}
+				
+			}
+		});
 		total_lendbookplane.setLayout(null);
 		total_lendbookplane.setBackground(SystemColor.controlHighlight);
 		total_lendbookplane.setBounds(906, 189, 335, 146);
