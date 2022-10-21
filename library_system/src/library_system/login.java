@@ -156,9 +156,11 @@ public class login {
 						//JOptionPane.showMessageDialog(null,"Username And Password is Valid !");
 						home_menu home_men = new home_menu();
 						home_men.setVisible(true);
+						frame.setVisible(false); //close the current frame
 						//((Connection) rsResultset).close(); //close the connection with database
 						pStatement.close(); //and let ohter method to access it
 						connection.close();
+						
 					} else if (count > 1) {//if username and password repeat
 						JOptionPane.showMessageDialog(null,"Duplicate Username And Password !");
 					}else {//if username and password incorrect

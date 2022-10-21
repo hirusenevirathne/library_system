@@ -71,7 +71,7 @@ public class logout extends JFrame {
 	public logout() {
 		initialize();
 		connection = sqlConnection.dbConnector();
-		//JOptionPane.showMessageDialog(null, "Connect to the Database Sucessfully !");
+		//JOptionPane.showMessageDialog(null, "Connect to the Database Successfully !");
 	}
 
 	/**
@@ -162,6 +162,7 @@ public class logout extends JFrame {
 						//JOptionPane.showMessageDialog(null,"Username And Password is Valid !");
 						home_menu home_men = new home_menu();
 						home_men.setVisible(true);
+						frame.setVisible(false); //close the current frame
 						//((Connection) rsResultset).close(); //close the connection with database
 						pStatement.close(); //and let ohter method to access it
 						connection.close();

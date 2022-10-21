@@ -89,12 +89,15 @@ public class home_menu extends JFrame {
 		btnLogOut.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnLogOut.setBackground(SystemColor.controlHighlight);
 		btnLogOut.addActionListener(new ActionListener() {
+			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
 				logout logoutobj = new logout();
-				logoutobj.setVisible(true);
+				logoutobj.show(); //show the new window
+				//logoutobj.setVisible(true);
 				
 				//login logpageLogin = new login(); //create a object with login class
 				//logpageLogin.
+				dispose(); //close the currant window
 			}
 		});
 		btnLogOut.setBounds(1182, 21, 89, 23);
@@ -121,6 +124,8 @@ public class home_menu extends JFrame {
 			@Override
 			public void mousePressed(MouseEvent e) {  //press the home button and go to the home_UI
 				new homeUI().show();
+				dispose();
+				 //close the current frame
 			}
 		});
 		homeButton.setBackground(SystemColor.controlHighlight);
@@ -170,6 +175,7 @@ public class home_menu extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				new booksUI().show();
+				dispose();
 			}
 		});
 		bookButton.setBackground(SystemColor.controlHighlight);
@@ -229,6 +235,7 @@ public class home_menu extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				new memberUI().show();
+				dispose();
 			}
 		});
 		memberButton.setBackground(SystemColor.controlHighlight);
@@ -285,6 +292,7 @@ public class home_menu extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				new searchUI().show();
+				dispose();
 			}
 		});
 		searchButton.setBackground(SystemColor.controlHighlight);
@@ -340,6 +348,7 @@ public class home_menu extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				new updateUI().show();
+				dispose();
 			}
 		});
 		updateButton.setBackground(SystemColor.controlHighlight);
@@ -395,6 +404,7 @@ public class home_menu extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				new deleteUI().show();
+				dispose();
 			}
 		});
 		deleteButton.setBackground(SystemColor.controlHighlight);
@@ -450,6 +460,7 @@ public class home_menu extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				new receiveUI().show();
+				dispose();
 			}
 		});
 		receivebookButton.setBackground(SystemColor.controlHighlight);
@@ -506,6 +517,7 @@ public class home_menu extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				new lendbookUI().show();
+				dispose();
 			}
 		});
 		lendbookButton.setBackground(SystemColor.controlHighlight);

@@ -78,6 +78,7 @@ public class homeUI extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				new home_menu().show();
+				dispose(); //close the currant window
 			}
 		});
 		homebtn.setBackground(SystemColor.menu);
