@@ -7,15 +7,29 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import net.proteanit.sql.DbUtils;
+
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+import javax.swing.JTextField;
+import javax.swing.JTable;
+import javax.swing.JScrollPane;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class booksUI extends JFrame {
 
 	private JPanel contentPane;
+	private JTextField textFieldSearch;
+	private JTable table;
 
 	/**
 	 * Launch the application.
@@ -32,11 +46,16 @@ public class booksUI extends JFrame {
 			}
 		});
 	}
-
+	
+	
+	Connection connection = null;
 	/**
 	 * Create the frame.
 	 */
 	public booksUI() {
+		
+		connection = sqlConnection.dbConnector();
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1297, 734);
 		contentPane = new JPanel();
@@ -94,9 +113,61 @@ public class booksUI extends JFrame {
 				lblbackico.setIcon(new ImageIcon(homeUI.class.getResource("/main/images/back small.png")));
 				lblbackico.setBounds(10, 11, 32, 31);
 				homebtn.add(lblbackico);
+				
+				textFieldSearch = new JTextField();
+				textFieldSearch.addKeyListener(new KeyAdapter() {
+					@Override
+					public void keyReleased(KeyEvent e) { //add function for search button
+						
+						String serchString = "";
+						
+						try {
+							serchString = textFieldSearch.getText();
+							String queryString = "SELECT \r\n"
+									+ "book_ID AS \"Book ID\",\r\n"
+									+ "B_name AS \"Book Name\",\r\n"
+									+ "A_F_name AS \"Author First Name\",\r\n"
+									+ "A_L_name AS \"Author Last Name\",\r\n"
+									+ "Other_details AS \"Other Details\",\r\n"
+									+ "state AS \"Book States\"\r\n"
+									+ "FROM books B\r\n"
+									+ "JOIN author A\r\n"
+									+ "	ON B.Author_ID = A.Author_id\r\n"
+									+ "WHERE A_F_name LIKE \"%"+serchString+"%\"\r\n"
+									+ "ORDER BY B_name;\r\n"
+									+ "";
+							PreparedStatement pStatement = connection.prepareStatement(queryString);
+							ResultSet rsResultset = pStatement.executeQuery(); 
+							table.setModel(DbUtils.resultSetToTableModel(rsResultset));
+							
+							
+							pStatement.close();
+							rsResultset.close();
+							
+							
+							
+						} catch (Exception e2) {
+							System.out.println(e2);
+							System.out.println("thiss error in book button");
+							// TODO: handle exception
+						}
+						
+						
+						
+					}
+				});
+				textFieldSearch.setBounds(55, 173, 523, 47);
+				backgroundpanel.add(textFieldSearch);
+				textFieldSearch.setColumns(10);
+				
+				JScrollPane scrollPane = new JScrollPane();
+				scrollPane.setBounds(22, 479, 1238, 205);
+				backgroundpanel.add(scrollPane);
+				
+				table = new JTable();
+				scrollPane.setViewportView(table);
 				//Back to Home BUtton ENDS 
 				
 				
 	}
-
 }
