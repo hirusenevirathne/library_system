@@ -24,12 +24,14 @@ import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.JComboBox;
 
 public class booksUI extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textFieldSearch;
 	private JTable table;
+	private String searchByString = "";
 
 	/**
 	 * Launch the application.
@@ -49,6 +51,13 @@ public class booksUI extends JFrame {
 	
 	
 	Connection connection = null;
+	
+	public void setColouronMouse( JPanel panel) { //create a method to change button color when mouse is on it
+		panel.setBackground(new java.awt.Color(115, 163, 239));		
+	}
+	public void reSetColouronMouse( JPanel panel) {//create a method to change original button color when mouse is not on it
+		panel.setBackground(SystemColor.controlHighlight);		
+	}
 	/**
 	 * Create the frame.
 	 */
@@ -116,10 +125,12 @@ public class booksUI extends JFrame {
 				
 				textFieldSearch = new JTextField();
 				textFieldSearch.addKeyListener(new KeyAdapter() {
+					
+					/*
 					@Override
 					public void keyReleased(KeyEvent e) { //add function for search button
 						
-						String serchString = "";
+						String serchString = "1";
 						
 						try {
 							serchString = textFieldSearch.getText();
@@ -133,9 +144,11 @@ public class booksUI extends JFrame {
 									+ "FROM books B\r\n"
 									+ "JOIN author A\r\n"
 									+ "	ON B.Author_ID = A.Author_id\r\n"
-									+ "WHERE A_F_name LIKE \"%"+serchString+"%\"\r\n"
+									+ "WHERE "+searchByString+" LIKE \"%"+serchString+"%\"\r\n"
 									+ "ORDER BY B_name;\r\n"
 									+ "";
+							//System.out.println(queryString);
+							
 							PreparedStatement pStatement = connection.prepareStatement(queryString);
 							ResultSet rsResultset = pStatement.executeQuery(); 
 							table.setModel(DbUtils.resultSetToTableModel(rsResultset));
@@ -148,13 +161,12 @@ public class booksUI extends JFrame {
 							
 						} catch (Exception e2) {
 							System.out.println(e2);
-							System.out.println("thiss error in book button");
+							System.out.println("this error in book button");
 							// TODO: handle exception
-						}
-						
-						
-						
+						}						
 					}
+					
+					*/
 				});
 				textFieldSearch.setBounds(55, 173, 523, 47);
 				backgroundpanel.add(textFieldSearch);
@@ -166,6 +178,73 @@ public class booksUI extends JFrame {
 				
 				table = new JTable();
 				scrollPane.setViewportView(table);
+				
+				JComboBox comboBoxSearchTable = new JComboBox();
+				comboBoxSearchTable.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						searchByString = comboBoxSearchTable.getSelectedItem().toString();
+						
+						if (searchByString == "Book ID") {
+							searchByString = "book_ID";
+						}else if (searchByString == "Book Name") {
+							searchByString = "B_name";
+						}else if (searchByString =="Author First Name") {
+							searchByString = "A_F_name";
+						}else if (searchByString == "Author Last Name") {
+							searchByString = "A_L_name";
+						}else if (searchByString == "Published Year") {
+							searchByString = "publish_year";
+						}
+						else {
+							searchByString = "book_ID";
+						}
+					}
+				});
+				comboBoxSearchTable.setFont(new Font("Tahoma", Font.BOLD, 17));
+				comboBoxSearchTable.setBackground(SystemColor.window);
+				comboBoxSearchTable.setBounds(622, 173, 308, 47);
+				backgroundpanel.add(comboBoxSearchTable);
+				
+				
+				comboBoxSearchTable.addItem("Book ID");
+				comboBoxSearchTable.addItem("Book Name");
+				comboBoxSearchTable.addItem("Author First Name");
+				comboBoxSearchTable.addItem("Author Last Name");
+				comboBoxSearchTable.addItem("Published Year");
+				comboBoxSearchTable.setSelectedItem("Book_ID");
+				
+				
+				//add action for the Button
+				JPanel searchpanel = new JPanel();
+				searchpanel.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseEntered(MouseEvent e) { //change the button color when mouse on it
+						setColouronMouse(searchpanel);
+					}
+					
+					@Override
+					public void mouseExited(MouseEvent e) { //change the button color back to normal
+						reSetColouronMouse(searchpanel);
+					}
+					
+					
+					
+				});
+				searchpanel.setBackground(SystemColor.controlHighlight);
+				searchpanel.setBounds(986, 173, 254, 47);
+				backgroundpanel.add(searchpanel);
+				searchpanel.setLayout(null);
+				
+				JLabel lblNewLabel = new JLabel("Search");
+				lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 17));
+				lblNewLabel.setBounds(98, 11, 58, 31);
+				searchpanel.add(lblNewLabel);
+				
+				
+			
+				
+				//comboBoxSearchTable.setSelectedItem("Select Search Method");
 				//Back to Home BUtton ENDS 
 				
 				
