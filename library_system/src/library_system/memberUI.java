@@ -35,7 +35,7 @@ public class memberUI extends JFrame {
 	private JTextField textFieldSearch;
 	private JTable table;
 	private String searchByString = "book_ID";
-	private String serchString = "1";
+	private String serchString = "";
 
 	/**
 	 * Launch the application.

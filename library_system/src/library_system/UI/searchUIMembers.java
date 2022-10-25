@@ -24,12 +24,14 @@ import javax.swing.border.EmptyBorder;
 
 import library_system.homeUI;
 import library_system.home_menu;
+import library_system.searchUI;
 import library_system.sqlConnection;
 import net.proteanit.sql.DbUtils;
 
 public class searchUIMembers extends JFrame {
 
 	private JPanel contentPane;
+	
 
 	/**
 	 * Launch the application.
@@ -55,8 +57,8 @@ public class searchUIMembers extends JFrame {
 		Connection connection = null;
 		private JTextField textFieldSearch;
 		private JTable table;
-		private String searchByString = "book_ID";
-		private String serchString = "1";
+		private String searchByString = "Mem_ID";
+		private String serchString = "";
 		
 		public void setColouronMouse( JPanel panel) { //create a method to change button color when mouse is on it
 			panel.setBackground(new java.awt.Color(115, 163, 239));		
@@ -170,6 +172,22 @@ public class searchUIMembers extends JFrame {
 				panelbackground.setLayout(null);
 				
 				JPanel panelBooksSelectSearch = new JPanel();
+				panelBooksSelectSearch.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseEntered(MouseEvent e) {
+						setColouronMouse(panelBooksSelectSearch);
+					}
+					@Override
+					public void mouseExited(MouseEvent e) {
+						panelBooksSelectSearch.setBackground(SystemColor.controlHighlight);
+					}
+					@SuppressWarnings("deprecation")
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						new searchUI().show();
+						dispose();
+					}
+				});
 				panelBooksSelectSearch.setBackground(SystemColor.controlHighlight);
 				panelBooksSelectSearch.setBounds(20, 11, 292, 49);
 				panelbackground.add(panelBooksSelectSearch);
@@ -181,6 +199,23 @@ public class searchUIMembers extends JFrame {
 				panelBooksSelectSearch.add(lblNewLabel);
 				
 				JPanel panelAuthorSelectSearch = new JPanel();
+				panelAuthorSelectSearch.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseEntered(MouseEvent e) {
+						setColouronMouse(panelAuthorSelectSearch);
+					}
+					@Override
+					public void mouseExited(MouseEvent e) {
+						panelAuthorSelectSearch.setBackground(SystemColor.controlHighlight);
+					}
+					@SuppressWarnings("deprecation")
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						
+						new searchUIAuthors().show();;
+						dispose();
+					}
+				});
 				panelAuthorSelectSearch.setBackground(SystemColor.controlHighlight);
 				panelAuthorSelectSearch.setBounds(334, 11, 292, 49);
 				panelbackground.add(panelAuthorSelectSearch);
@@ -203,6 +238,22 @@ public class searchUIMembers extends JFrame {
 				panelMembersSelectSearch.add(lblMembers);
 				
 				JPanel panelLendingSelectSearch = new JPanel();
+				panelLendingSelectSearch.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseEntered(MouseEvent e) {
+						setColouronMouse(panelLendingSelectSearch);
+					}
+					@Override
+					public void mouseExited(MouseEvent e) {
+						panelLendingSelectSearch.setBackground(SystemColor.controlHighlight);
+					}
+					@SuppressWarnings("deprecation")
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						new searchUILending().show();
+						dispose();
+					}
+				});
 				panelLendingSelectSearch.setBackground(SystemColor.controlHighlight);
 				panelLendingSelectSearch.setBounds(966, 11, 292, 49);
 				panelbackground.add(panelLendingSelectSearch);
@@ -225,6 +276,80 @@ public class searchUIMembers extends JFrame {
 				panelbody.add(textFieldSearch);
 				
 				JPanel searchpanel = new JPanel();
+				searchpanel.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseEntered(MouseEvent e) { //change the button color when mouse on it
+						setColouronMouse(searchpanel);
+					}
+					
+					@Override
+					public void mouseExited(MouseEvent e) { //change the button color back to normal
+						reSetColouronMouse(searchpanel);
+					}
+					
+					
+					
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						
+						try {
+							if (searchByString == "Mem_ID" ) {
+								serchString = textFieldSearch.getText();
+								String queryString = "SELECT \r\n"
+										+ "Mem_ID AS \"Member ID\",\r\n"
+										+ "F_name AS \"First Name\",\r\n"
+										+ "L_name AS \"Last Name\",\r\n"
+										+ "Contact_no AS \"Contact Number\" \r\n"
+										+ "FROM \r\n"
+										+ "library_system.members\r\n"
+										+ "WHERE Mem_ID LIKE "+serchString+"\r\n"
+										+ "ORDER BY Mem_ID\r\n"
+										+ ";";
+								//System.out.println(queryString); //use this to check the errors in query
+								
+								PreparedStatement pStatement = connection.prepareStatement(queryString);
+								ResultSet rsResultset = pStatement.executeQuery(); 
+								table.setModel(DbUtils.resultSetToTableModel(rsResultset));
+								
+								
+								pStatement.close();
+								rsResultset.close();
+								
+							}
+							else {
+								serchString = textFieldSearch.getText();
+								String queryString = "SELECT \r\n"
+										+ "Mem_ID AS \"Member ID\",\r\n"
+										+ "F_name AS \"First Name\",\r\n"
+										+ "L_name AS \"Last Name\",\r\n"
+										+ "Contact_no AS \"Contact Number\" \r\n"
+										+ "FROM \r\n"
+										+ "library_system.members\r\n"
+										+ "WHERE "+searchByString+" LIKE '%"+serchString+"%'\r\n"
+										+ "ORDER BY Mem_ID\r\n"
+										+ ";";
+								System.out.println(queryString); //use this to check the errors in query
+								
+								PreparedStatement pStatement = connection.prepareStatement(queryString);
+								ResultSet rsResultset = pStatement.executeQuery(); 
+								table.setModel(DbUtils.resultSetToTableModel(rsResultset));
+								
+								
+								pStatement.close();
+								rsResultset.close();
+							}
+							
+							
+							
+							
+						} catch (Exception e2) {
+							System.out.println(e2);
+							System.out.println("this error in book button");
+							// TODO: handle exception
+						}
+						
+					}
+				});
 				searchpanel.setLayout(null);
 				searchpanel.setBackground(SystemColor.controlHighlight);
 				searchpanel.setBounds(834, 23, 254, 47);
@@ -241,19 +366,16 @@ public class searchUIMembers extends JFrame {
 						
 						searchByString = comboBoxSearchTable.getSelectedItem().toString();
 						
-						if (searchByString == "Book ID") {
-							searchByString = "book_ID";
-						}else if (searchByString == "Book Name") {
-							searchByString = "B_name";
-						}else if (searchByString =="Author First Name") {
-							searchByString = "A_F_name";
-						}else if (searchByString == "Author Last Name") {
-							searchByString = "A_L_name";
-						}else if (searchByString == "Published Year") {
-							searchByString = "publish_year";
-						}
-						else {
-							searchByString = "book_ID";
+						if (searchByString == "Member ID") {
+							searchByString = "Mem_ID";
+						}else if (searchByString == "First Name") {
+							searchByString = "F_name";
+						}else if (searchByString =="Last Name") {
+							searchByString = "L_name";
+						}else if (searchByString == "Contact Number") {
+							searchByString = "Contact_no";
+						}else {
+							searchByString = "Mem_ID";
 						}	
 						
 					}
@@ -263,12 +385,11 @@ public class searchUIMembers extends JFrame {
 				comboBoxSearchTable.setBounds(26, 90, 308, 47);
 				panelbody.add(comboBoxSearchTable);
 				
-				comboBoxSearchTable.addItem("Book ID");
-				comboBoxSearchTable.addItem("Book Name");
-				comboBoxSearchTable.addItem("Author First Name");
-				comboBoxSearchTable.addItem("Author Last Name");
-				comboBoxSearchTable.addItem("Published Year");
-				comboBoxSearchTable.setSelectedItem("Book_ID");
+				comboBoxSearchTable.addItem("Member ID");
+				comboBoxSearchTable.addItem("First Name");
+				comboBoxSearchTable.addItem("Last Name");
+				comboBoxSearchTable.addItem("Contact Number");
+				comboBoxSearchTable.setSelectedItem("Member ID");
 				
 				JScrollPane scrollPane = new JScrollPane();
 				scrollPane.setBounds(10, 157, 1241, 337);
@@ -276,6 +397,8 @@ public class searchUIMembers extends JFrame {
 				
 				table = new JTable();
 				scrollPane.setViewportView(table);
+				
+				showTable();
 				//Back to Home BUtton ENDS ---------------------------------------------------------------------
 				
 	}

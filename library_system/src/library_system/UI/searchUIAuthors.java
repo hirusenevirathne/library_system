@@ -24,6 +24,7 @@ import javax.swing.border.EmptyBorder;
 
 import library_system.homeUI;
 import library_system.home_menu;
+import library_system.searchUI;
 import library_system.sqlConnection;
 import net.proteanit.sql.DbUtils;
 
@@ -54,8 +55,8 @@ public class searchUIAuthors extends JFrame {
 	Connection connection = null;
 	private JTextField textFieldSearch;
 	private JTable table;
-	private String searchByString = "book_ID";
-	private String serchString = "1";
+	private String searchByString = "Author_id";
+	private String serchString = "";
 	
 	public void setColouronMouse( JPanel panel) { //create a method to change button color when mouse is on it
 		panel.setBackground(new java.awt.Color(115, 163, 239));		
@@ -67,13 +68,17 @@ public class searchUIAuthors extends JFrame {
 	public void showTable() { //method for show the table 
 		try {
 			
-			String queryString = "SELECT \r\n"
-					+ "Mem_ID AS \"Member ID\",\r\n"
-					+ "F_name AS \"First Name\",\r\n"
-					+ "L_name AS \"Last Name\",\r\n"
-					+ "Contact_no AS \"Contact Number\" \r\n"
-					+ "FROM \r\n"
-					+ "library_system.members;";
+			String queryString =  "SELECT \r\n"
+					+ "book_ID AS \"Book ID\",\r\n"
+					+ "A_F_name AS \"Author First Name\",\r\n"
+					+ "A_L_name AS \"Author Last Name\",\r\n"
+					+ "B_name AS \"Book Name\",\r\n"
+					+ "publish_year AS \"Published Year\",\r\n"
+					+ "Other_details AS \"Other Details\",\r\n"
+					+ "state AS \"Status\"\r\n"
+					+ "FROM books\r\n"
+					+ "JOIN author\r\n"
+					+ "	ON books.Author_ID = author.Author_id ;";
 			PreparedStatement pStatement = connection.prepareStatement(queryString);
 			ResultSet rsResultset = pStatement.executeQuery(); 
 			table.setModel(DbUtils.resultSetToTableModel(rsResultset));
@@ -87,6 +92,75 @@ public class searchUIAuthors extends JFrame {
 		} catch (Exception e2) {
 			System.out.println(e2);
 			System.out.println("thiss error in book button");
+			// TODO: handle exception
+		}
+		
+	}
+	
+	
+	public void search() {
+		
+		try {
+			serchString = textFieldSearch.getText();
+			
+			if (searchByString == "A_F_name" || searchByString == "A_L_name" ) {
+				
+				String queryString = "SELECT \r\n"
+						+ "book_ID AS \"Book ID\",\r\n"
+						+ "B_name AS \"Book Name\",\r\n"
+						+ "publish_year AS \"Published Year\",\r\n"
+						+ "A.author_id AS \"Author ID\",\r\n"
+						+ "A_F_name AS \"Author First Name\",\r\n"
+						+ "A_L_name AS \"Author Last Name\",\r\n"
+						+ "Other_details AS \"Other Details\",\r\n"
+						+ "state AS \"Book States\"\r\n"
+						+ "FROM books B\r\n"
+						+ "JOIN author A\r\n"
+						+ "	ON B.Author_ID = A.Author_id\r\n"
+						+ "WHERE A."+searchByString+" LIKE \"%"+serchString+"%\"\r\n"
+						+ "ORDER BY A_F_name;";
+				
+				//System.out.println(queryString); //use this to check the errors in query
+				PreparedStatement pStatement = connection.prepareStatement(queryString);
+				ResultSet rsResultset = pStatement.executeQuery(); 
+				table.setModel(DbUtils.resultSetToTableModel(rsResultset));
+				
+				
+				pStatement.close();
+				rsResultset.close();
+				
+			}else {
+				String queryString = "SELECT \r\n"
+						+ "book_ID AS \"Book ID\",\r\n"
+						+ "B_name AS \"Book Name\",\r\n"
+						+ "publish_year AS \"Published Year\",\r\n"
+						+ "A.author_id AS \"Author ID\",\r\n"
+						+ "A_F_name AS \"Author First Name\",\r\n"
+						+ "A_L_name AS \"Author Last Name\",\r\n"
+						+ "Other_details AS \"Other Details\",\r\n"
+						+ "state AS \"Book States\"\r\n"
+						+ "FROM books B\r\n"
+						+ "JOIN author A\r\n"
+						+ "	ON B.Author_ID = A.Author_id\r\n"
+						+ "WHERE B."+searchByString+" LIKE \"%"+serchString+"%\"\r\n"
+						+ "ORDER BY A_F_name;";
+				
+				//System.out.println(queryString); //use this to check the errors in query
+				PreparedStatement pStatement = connection.prepareStatement(queryString);
+				ResultSet rsResultset = pStatement.executeQuery(); 
+				table.setModel(DbUtils.resultSetToTableModel(rsResultset));
+				
+				
+				pStatement.close();
+				rsResultset.close();
+			}
+			
+			
+		} catch (Exception e) {
+			
+			System.out.println(e);
+			System.out.println("this error in book button");
+			// TODO: handle exception
 			// TODO: handle exception
 		}
 		
@@ -169,6 +243,22 @@ public class searchUIAuthors extends JFrame {
 				panelbackground.setLayout(null);
 				
 				JPanel panelBooksSelectSearch = new JPanel();
+				panelBooksSelectSearch.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseEntered(MouseEvent e) {
+						setColouronMouse(panelBooksSelectSearch);
+					}
+					@Override
+					public void mouseExited(MouseEvent e) {
+						panelBooksSelectSearch.setBackground(SystemColor.controlHighlight);
+					}
+					@SuppressWarnings("deprecation")
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						new searchUI().show();
+						dispose();
+					}
+				});
 				panelBooksSelectSearch.setBackground(SystemColor.controlHighlight);
 				panelBooksSelectSearch.setBounds(20, 11, 292, 49);
 				panelbackground.add(panelBooksSelectSearch);
@@ -191,6 +281,22 @@ public class searchUIAuthors extends JFrame {
 				panelAuthorSelectSearch.add(lblAuthors);
 				
 				JPanel panelMembersSelectSearch = new JPanel();
+				panelMembersSelectSearch.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseEntered(MouseEvent e) {
+						setColouronMouse(panelMembersSelectSearch);
+					}
+					@Override
+					public void mouseExited(MouseEvent e) {
+						panelMembersSelectSearch.setBackground(SystemColor.controlHighlight);
+					}
+					@SuppressWarnings("deprecation")
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						new searchUIMembers().show();
+						dispose();
+					}
+				});
 				panelMembersSelectSearch.setBackground(SystemColor.controlHighlight);
 				panelMembersSelectSearch.setBounds(651, 11, 292, 49);
 				panelbackground.add(panelMembersSelectSearch);
@@ -202,6 +308,22 @@ public class searchUIAuthors extends JFrame {
 				panelMembersSelectSearch.add(lblMembers);
 				
 				JPanel panelLendingSelectSearch = new JPanel();
+				panelLendingSelectSearch.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseEntered(MouseEvent e) {
+						setColouronMouse(panelLendingSelectSearch);
+					}
+					@Override
+					public void mouseExited(MouseEvent e) {
+						panelLendingSelectSearch.setBackground(SystemColor.controlHighlight);
+					}
+					@SuppressWarnings("deprecation")
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						new searchUILending().show();
+						dispose();
+					}
+				});
 				panelLendingSelectSearch.setBackground(SystemColor.controlHighlight);
 				panelLendingSelectSearch.setBounds(966, 11, 292, 49);
 				panelbackground.add(panelLendingSelectSearch);
@@ -224,6 +346,21 @@ public class searchUIAuthors extends JFrame {
 				panelbody.add(textFieldSearch);
 				
 				JPanel searchpanel = new JPanel();
+				searchpanel.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseEntered(MouseEvent e) {
+						setColouronMouse(searchpanel);
+					}
+					
+					@Override
+					public void mouseExited(MouseEvent e) {
+						searchpanel.setBackground(SystemColor.controlHighlight);
+					}
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						search(); 
+					}
+				});
 				searchpanel.setLayout(null);
 				searchpanel.setBackground(SystemColor.controlHighlight);
 				searchpanel.setBounds(834, 23, 254, 47);
@@ -240,8 +377,8 @@ public class searchUIAuthors extends JFrame {
 						
 						searchByString = comboBoxSearchTable.getSelectedItem().toString();
 						
-						if (searchByString == "Book ID") {
-							searchByString = "book_ID";
+						if (searchByString == "Author ID") {
+							searchByString = "Author_id";
 						}else if (searchByString == "Book Name") {
 							searchByString = "B_name";
 						}else if (searchByString =="Author First Name") {
@@ -252,7 +389,7 @@ public class searchUIAuthors extends JFrame {
 							searchByString = "publish_year";
 						}
 						else {
-							searchByString = "book_ID";
+							searchByString = "Author_id";
 						}	
 						
 					}
@@ -262,12 +399,12 @@ public class searchUIAuthors extends JFrame {
 				comboBoxSearchTable.setBounds(26, 90, 308, 47);
 				panelbody.add(comboBoxSearchTable);
 				
-				comboBoxSearchTable.addItem("Book ID");
+				comboBoxSearchTable.addItem("Author ID");
 				comboBoxSearchTable.addItem("Book Name");
 				comboBoxSearchTable.addItem("Author First Name");
 				comboBoxSearchTable.addItem("Author Last Name");
 				comboBoxSearchTable.addItem("Published Year");
-				comboBoxSearchTable.setSelectedItem("Book_ID");
+				comboBoxSearchTable.setSelectedItem("Author_id");
 				
 				JScrollPane scrollPane = new JScrollPane();
 				scrollPane.setBounds(10, 157, 1241, 337);
@@ -275,6 +412,7 @@ public class searchUIAuthors extends JFrame {
 				
 				table = new JTable();
 				scrollPane.setViewportView(table);
+				showTable();
 				//Back to Home BUtton ENDS ---------------------------------------------------------------------
 				
 				

@@ -24,6 +24,7 @@ import javax.swing.border.EmptyBorder;
 
 import library_system.homeUI;
 import library_system.home_menu;
+import library_system.searchUI;
 import library_system.sqlConnection;
 import net.proteanit.sql.DbUtils;
 
@@ -170,6 +171,22 @@ public class searchUILending extends JFrame {
 				panelbackground.setLayout(null);
 				
 				JPanel panelBooksSelectSearch = new JPanel();
+				panelBooksSelectSearch.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseEntered(MouseEvent e) {
+						setColouronMouse(panelBooksSelectSearch);
+					}
+					@Override
+					public void mouseExited(MouseEvent e) {
+						panelBooksSelectSearch.setBackground(SystemColor.controlHighlight);
+					}
+					@SuppressWarnings("deprecation")
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						new searchUI().show();
+						dispose();
+					}
+				});
 				panelBooksSelectSearch.setBackground(SystemColor.controlHighlight);
 				panelBooksSelectSearch.setBounds(20, 11, 292, 49);
 				panelbackground.add(panelBooksSelectSearch);
@@ -181,6 +198,23 @@ public class searchUILending extends JFrame {
 				panelBooksSelectSearch.add(lblNewLabel);
 				
 				JPanel panelAuthorSelectSearch = new JPanel();
+				panelAuthorSelectSearch.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseEntered(MouseEvent e) {
+						setColouronMouse(panelAuthorSelectSearch);
+					}
+					@Override
+					public void mouseExited(MouseEvent e) {
+						panelAuthorSelectSearch.setBackground(SystemColor.controlHighlight);
+					}
+					@SuppressWarnings("deprecation")
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						
+						new searchUIAuthors().show();;
+						dispose();
+					}
+				});
 				panelAuthorSelectSearch.setBackground(SystemColor.controlHighlight);
 				panelAuthorSelectSearch.setBounds(334, 11, 292, 49);
 				panelbackground.add(panelAuthorSelectSearch);
@@ -192,6 +226,22 @@ public class searchUILending extends JFrame {
 				panelAuthorSelectSearch.add(lblAuthors);
 				
 				JPanel panelMembersSelectSearch = new JPanel();
+				panelMembersSelectSearch.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseEntered(MouseEvent e) {
+						setColouronMouse(panelMembersSelectSearch);
+					}
+					@Override
+					public void mouseExited(MouseEvent e) {
+						panelMembersSelectSearch.setBackground(SystemColor.controlHighlight);
+					}
+					@SuppressWarnings("deprecation")
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						new searchUIMembers().show();
+						dispose();
+					}
+				});
 				panelMembersSelectSearch.setBackground(SystemColor.controlHighlight);
 				panelMembersSelectSearch.setBounds(651, 11, 292, 49);
 				panelbackground.add(panelMembersSelectSearch);

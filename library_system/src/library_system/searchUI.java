@@ -56,7 +56,7 @@ public class searchUI extends JFrame {
 	private JTextField textTo;
 	private JTable table;
 	private String searchByString = "book_ID";
-	private String serchString = "1";
+	private String serchString = "";
 	private String yearFrom = "1990";
 	private String yearTo = "2022";
 	private boolean searchByRange = false;
@@ -72,12 +72,20 @@ public class searchUI extends JFrame {
 		try {
 			
 			String queryString = "SELECT \r\n"
-					+ "Mem_ID AS \"Member ID\",\r\n"
-					+ "F_name AS \"First Name\",\r\n"
-					+ "L_name AS \"Last Name\",\r\n"
-					+ "Contact_no AS \"Contact Number\" \r\n"
-					+ "FROM \r\n"
-					+ "library_system.members;";
+					+ "book_ID AS \"Book ID\",\r\n"
+					+ "B_name AS \"Book Name\",\r\n"
+					+ "publish_year AS \"Published Year\",\r\n"
+					+ "A.author_id AS \"Author ID\",\r\n"
+					+ "A_F_name AS \"Author First Name\",\r\n"
+					+ "A_L_name AS \"Author Last Name\",\r\n"
+					+ "Other_details AS \"Other Details\",\r\n"
+					+ "state AS \"Book States\"\r\n"
+					+ "FROM books B\r\n"
+					+ "JOIN author A\r\n"
+					+ "	ON B.Author_ID = A.Author_id\r\n"
+					+ "WHERE "+searchByString+" LIKE \"%"+serchString+"%\"\r\n"
+					+ "ORDER BY B_name;\r\n"
+					+ "";
 			PreparedStatement pStatement = connection.prepareStatement(queryString);
 			ResultSet rsResultset = pStatement.executeQuery(); 
 			table.setModel(DbUtils.resultSetToTableModel(rsResultset));
@@ -450,6 +458,8 @@ public class searchUI extends JFrame {
 				
 				table = new JTable();
 				scrollPane.setViewportView(table);
+				
+				showTable();
 				//Back to Home BUtton ENDS ---------------------------------------------------------------------
 				
 				
