@@ -23,19 +23,21 @@ import javax.swing.border.EmptyBorder;
 
 import library_system.booksUI;
 import library_system.homeUI;
+import library_system.memberUI;
 import library_system.sqlConnection;
 import net.proteanit.sql.DbUtils;
 
 public class addMem_UI extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textFAuthorID;
-	private JTextField textFAFname;
-	private JTextField textFALname;
+	private JTextField textMemberID;
+	private JTextField textMFname;
+	private JTextField textMLname;
 	
-	private String authorID = "";
-	private String aFname = "";
-	private String aLname = "";
+	private String memberID = "";
+	private String mFname = "";
+	private String mLname = "";
+	private String contactNo = "";
 
 	/**
 	 * Launch the application.
@@ -57,6 +59,7 @@ public class addMem_UI extends JFrame {
 	
 	Connection connection = null; //create the connection variable
 	private JTable table;
+	private JTextField textContactNo;
 	
 	public void setColouronMouse( JPanel panel) { //create a method to change button color when mouse is on it
 		panel.setBackground(new java.awt.Color(115, 163, 239));		
@@ -69,12 +72,11 @@ public class addMem_UI extends JFrame {
 		try {
 			
 			String queryString = "SELECT \r\n"
-					+ "Author_id AS 'Author ID',\r\n"
-					+ "A_F_name AS 'Author First Name',\r\n"
-					+ "A_L_name AS 'Author Last Name'\r\n"
-					+ "FROM \r\n"
-					+ "library_system.author\r\n"
-					+ ";";
+					+ "Mem_ID AS 'Member ID',\r\n"
+					+ "F_name AS 'Member First Name',\r\n"
+					+ "L_name AS 'Member Last Name',\r\n"
+					+ "Contact_no AS 'Contact Number'\r\n"
+					+ "FROM library_system.members;";
 			
 			//System.out.println(queryString);
 			
@@ -102,27 +104,24 @@ public class addMem_UI extends JFrame {
 public void save() {
 		
 		try {
-			authorID = textFAuthorID.getText();
-			aFname = textFAFname.getText();
-			aLname = textFALname.getText();
+			memberID = textMemberID.getText();
+			mFname = textMFname.getText();
+			mLname = textMLname.getText();
+			contactNo = textContactNo.getText();
 			
-			
-			System.out.println(authorID);
-			System.out.println(aFname);
-			System.out.println(aLname);
-			
-			
-			String queryString = "INSERT INTO `library_system`.`author` (\r\n"
-					+ "`Author_id`, \r\n"
-					+ "`A_F_name`, \r\n"
-					+ "`A_L_name`\r\n"
+			String queryString = "INSERT INTO `library_system`.`members` (\r\n"
+					+ "`Mem_ID`, \r\n"
+					+ "`F_name`, \r\n"
+					+ "`L_name`, \r\n"
+					+ "`Contact_no`\r\n"
 					+ ") \r\n"
 					+ "VALUES (\r\n"
-					+ "'"+authorID+"', \r\n"
-					+ "'"+aFname+"', \r\n"
-					+ "'"+aLname+"'\r\n"
+					+ "'"+memberID+"', \r\n"
+					+ "'"+mFname+"', \r\n"
+					+ "'"+mLname+"', \r\n"
+					+ "'"+contactNo+"'\r\n"
 					+ ");";
-			//System.out.println(queryString); //use this to check the errors in query
+			System.out.println(queryString); //use this to check the errors in query
 			
 			
 			
@@ -148,25 +147,32 @@ public void save() {
 	public Boolean validate_Save() {
 		boolean textFeildState = false;
 		
-		if (textFAuthorID.getText().equals("")) {
+		if (textMemberID.getText().equals("")) {
 			
 			textFeildState = false;
-			JOptionPane.showMessageDialog(null, "Author ID Required !");
-			textFAuthorID.requestFocus();
+			JOptionPane.showMessageDialog(null, "Member ID Required !");
+			textMemberID.requestFocus();
 			
-		}else if (textFAFname.getText().equals("")) {
-			
-			textFeildState = false;
-			JOptionPane.showMessageDialog(null, "Author First Name Required !");
-			textFAFname.requestFocus();
-			
-		}else if (textFALname.getText().equals("")) {
+		}else if (textMFname.getText().equals("")) {
 			
 			textFeildState = false;
-			JOptionPane.showMessageDialog(null, "Author Last Name Required !");
-			textFALname.requestFocus();
+			JOptionPane.showMessageDialog(null, "Member First Name Required !");
+			textMFname.requestFocus();
 			
-		}else {
+		}else if (textMLname.getText().equals("")) {
+			
+			textFeildState = false;
+			JOptionPane.showMessageDialog(null, "Member Last Name Required !");
+			textMLname.requestFocus();
+			
+		}else if (textContactNo.getText().equals("")) {
+			
+			textFeildState = false;
+			JOptionPane.showMessageDialog(null, "Contact Number Required !");
+			textContactNo.requestFocus();
+			
+		}
+		else {
 			textFeildState = true;
 
 		}
@@ -230,7 +236,7 @@ public void save() {
 					@SuppressWarnings("deprecation")
 					@Override
 					public void mouseClicked(MouseEvent e) {
-						new booksUI().show();
+						new memberUI().show();
 						dispose(); //close the currant window
 					}
 				});
@@ -239,8 +245,8 @@ public void save() {
 				topblue_panel.add(homebtn);
 				homebtn.setLayout(null);
 				
-				JLabel lblbacktohome = new JLabel("Back to Books");
-				lblbacktohome.setBounds(44, 15, 96, 20);
+				JLabel lblbacktohome = new JLabel("Back to Member");
+				lblbacktohome.setBounds(36, 15, 104, 20);
 				lblbacktohome.setFont(new Font("Tahoma", Font.BOLD, 13));
 				homebtn.add(lblbacktohome);
 				
@@ -249,40 +255,40 @@ public void save() {
 				lblbackico.setBounds(10, 11, 32, 31);
 				homebtn.add(lblbackico);
 				
-				JLabel lblAuthorID = new JLabel("Author ID *   :");
-				lblAuthorID.setFont(new Font("Trebuchet MS", Font.BOLD, 19));
-				lblAuthorID.setBounds(75, 184, 126, 27);
-				backgroundpanel.add(lblAuthorID);
+				JLabel lblmemberID = new JLabel("Member ID *   :");
+				lblmemberID.setFont(new Font("Trebuchet MS", Font.BOLD, 19));
+				lblmemberID.setBounds(75, 184, 184, 27);
+				backgroundpanel.add(lblmemberID);
 				
-				textFAuthorID = new JTextField();
-				textFAuthorID.setFont(new Font("Trebuchet MS", Font.PLAIN, 19));
-				textFAuthorID.setColumns(10);
-				textFAuthorID.setBackground(SystemColor.inactiveCaptionBorder);
-				textFAuthorID.setBounds(285, 184, 246, 27);
-				backgroundpanel.add(textFAuthorID);
+				textMemberID = new JTextField();
+				textMemberID.setFont(new Font("Trebuchet MS", Font.PLAIN, 19));
+				textMemberID.setColumns(10);
+				textMemberID.setBackground(SystemColor.inactiveCaptionBorder);
+				textMemberID.setBounds(299, 184, 246, 27);
+				backgroundpanel.add(textMemberID);
 				
-				JLabel lblAuthorFirstName = new JLabel("Author First Name *   :");
+				JLabel lblAuthorFirstName = new JLabel("Member First Name *   :");
 				lblAuthorFirstName.setFont(new Font("Trebuchet MS", Font.BOLD, 19));
-				lblAuthorFirstName.setBounds(75, 239, 208, 27);
+				lblAuthorFirstName.setBounds(75, 239, 224, 27);
 				backgroundpanel.add(lblAuthorFirstName);
 				
-				textFAFname = new JTextField();
-				textFAFname.setFont(new Font("Trebuchet MS", Font.PLAIN, 19));
-				textFAFname.setColumns(10);
-				textFAFname.setBackground(SystemColor.inactiveCaptionBorder);
-				textFAFname.setBounds(285, 239, 246, 27);
-				backgroundpanel.add(textFAFname);
+				textMFname = new JTextField();
+				textMFname.setFont(new Font("Trebuchet MS", Font.PLAIN, 19));
+				textMFname.setColumns(10);
+				textMFname.setBackground(SystemColor.inactiveCaptionBorder);
+				textMFname.setBounds(299, 239, 246, 27);
+				backgroundpanel.add(textMFname);
 				
-				textFALname = new JTextField();
-				textFALname.setFont(new Font("Trebuchet MS", Font.PLAIN, 19));
-				textFALname.setColumns(10);
-				textFALname.setBackground(SystemColor.inactiveCaptionBorder);
-				textFALname.setBounds(285, 294, 246, 27);
-				backgroundpanel.add(textFALname);
+				textMLname = new JTextField();
+				textMLname.setFont(new Font("Trebuchet MS", Font.PLAIN, 19));
+				textMLname.setColumns(10);
+				textMLname.setBackground(SystemColor.inactiveCaptionBorder);
+				textMLname.setBounds(299, 294, 246, 27);
+				backgroundpanel.add(textMLname);
 				
-				JLabel lblAuthorLastName = new JLabel("Author Last Name *   :");
+				JLabel lblAuthorLastName = new JLabel("Member Last Name *   :");
 				lblAuthorLastName.setFont(new Font("Trebuchet MS", Font.BOLD, 19));
-				lblAuthorLastName.setBounds(75, 294, 208, 27);
+				lblAuthorLastName.setBounds(75, 294, 224, 27);
 				backgroundpanel.add(lblAuthorLastName);
 				
 				JPanel panelSave = new JPanel();
@@ -302,9 +308,9 @@ public void save() {
 						if (validate_Save()) {
 							
 							save();
-							
+							showTable();
 						}
-						showTable();
+						
 					}
 				});
 				panelSave.setLayout(null);
@@ -332,9 +338,10 @@ public void save() {
 					public void mouseClicked(MouseEvent e) {
 						
 						
-						textFAuthorID.setText("");
-						textFAFname.setText("");
-						textFALname.setText("");
+						textMemberID.setText("");
+						textMFname.setText("");
+						textMLname.setText("");
+						textContactNo.setText("");
 						
 					}
 				});
@@ -350,7 +357,7 @@ public void save() {
 				
 				JLabel lblNewLabel = new JLabel("* Please only enter valid Data values");
 				lblNewLabel.setFont(new Font("Trebuchet MS", Font.BOLD, 20));
-				lblNewLabel.setBounds(150, 367, 361, 33);
+				lblNewLabel.setBounds(613, 339, 361, 33);
 				backgroundpanel.add(lblNewLabel);
 				
 				JScrollPane scrollPane = new JScrollPane();
@@ -359,6 +366,18 @@ public void save() {
 				
 				table = new JTable();
 				scrollPane.setViewportView(table);
+				
+				textContactNo = new JTextField();
+				textContactNo.setFont(new Font("Trebuchet MS", Font.PLAIN, 19));
+				textContactNo.setColumns(10);
+				textContactNo.setBackground(SystemColor.inactiveCaptionBorder);
+				textContactNo.setBounds(299, 342, 246, 27);
+				backgroundpanel.add(textContactNo);
+				
+				JLabel lblContactNumber = new JLabel("Contact Number*    :");
+				lblContactNumber.setFont(new Font("Trebuchet MS", Font.BOLD, 19));
+				lblContactNumber.setBounds(75, 342, 208, 27);
+				backgroundpanel.add(lblContactNumber);
 				showTable();
 				//Back to Home BUtton ENDS
 	}
