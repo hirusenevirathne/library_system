@@ -1,35 +1,33 @@
-package library_system;
+package library_system.UI;
 
 import java.awt.Color;
 import java.awt.EventQueue;
-
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import library_system.UI.searchUIAuthors;
-import library_system.UI.searchUILending;
-import library_system.UI.searchUIMembers;
-import net.proteanit.sql.DbUtils;
-
-import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.SystemColor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-import javax.swing.JTextField;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
-import javax.swing.JTable;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
-public class searchUI extends JFrame {
+import library_system.homeUI;
+import library_system.home_menu;
+import library_system.sqlConnection;
+import net.proteanit.sql.DbUtils;
+
+public class searchUIAuthors extends JFrame {
 
 	private JPanel contentPane;
 
@@ -40,7 +38,7 @@ public class searchUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					searchUI frame = new searchUI();
+					searchUIAuthors frame = new searchUIAuthors();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -48,18 +46,16 @@ public class searchUI extends JFrame {
 			}
 		});
 	}
-
 	
+	
+	//----------------------------------------------------
+	
+
 	Connection connection = null;
 	private JTextField textFieldSearch;
-	private JTextField textFrom;
-	private JTextField textTo;
 	private JTable table;
 	private String searchByString = "book_ID";
 	private String serchString = "1";
-	private String yearFrom = "1990";
-	private String yearTo = "2022";
-	private boolean searchByRange = false;
 	
 	public void setColouronMouse( JPanel panel) { //create a method to change button color when mouse is on it
 		panel.setBackground(new java.awt.Color(115, 163, 239));		
@@ -96,85 +92,13 @@ public class searchUI extends JFrame {
 		
 	}
 	
-	public void search() {
-		
-		try {
-			
-			if (searchByRange ) {
-				
-				yearFrom = textFrom.getText();
-				yearTo = textTo.getText();
-				
-				serchString = textFieldSearch.getText();
-				String queryString = "SELECT \r\n"
-						+ "book_ID AS \"Book ID\",\r\n"
-						+ "B_name AS \"Book Name\",\r\n"
-						+ "publish_year AS \"Published Year\",\r\n"
-						+ "A.author_id AS \"Author ID\",\r\n"
-						+ "A_F_name AS \"Author First Name\",\r\n"
-						+ "A_L_name AS \"Author Last Name\",\r\n"
-						+ "Other_details AS \"Other Details\",\r\n"
-						+ "state AS \"Book States\"\r\n"
-						+ "FROM books B\r\n"
-						+ "JOIN author A\r\n"
-						+ "	ON B.Author_ID = A.Author_id\r\n"
-						+ "WHERE publish_year BETWEEN "+yearFrom+" AND "+yearTo+"\r\n"
-						+ "ORDER BY B_name;";
-				//System.out.println(queryString); //use this to check the errors in query
-				
-				PreparedStatement pStatement = connection.prepareStatement(queryString);
-				ResultSet rsResultset = pStatement.executeQuery(); 
-				table.setModel(DbUtils.resultSetToTableModel(rsResultset));
-				
-				
-				pStatement.close();
-				rsResultset.close();
-				
-			}else {
-				
-				serchString = textFieldSearch.getText();
-				String queryString = "SELECT \r\n"
-						+ "book_ID AS \"Book ID\",\r\n"
-						+ "B_name AS \"Book Name\",\r\n"
-						+ "publish_year AS \"Published Year\",\r\n"
-						+ "A.author_id AS \"Author ID\",\r\n"
-						+ "A_F_name AS \"Author First Name\",\r\n"
-						+ "A_L_name AS \"Author Last Name\",\r\n"
-						+ "Other_details AS \"Other Details\",\r\n"
-						+ "state AS \"Book States\"\r\n"
-						+ "FROM books B\r\n"
-						+ "JOIN author A\r\n"
-						+ "	ON B.Author_ID = A.Author_id\r\n"
-						+ "WHERE "+searchByString+" LIKE \"%"+serchString+"%\"\r\n"
-						+ "ORDER BY B_name;\r\n"
-						+ "";
-				//System.out.println(queryString); //use this to check the errors in query
-				
-				PreparedStatement pStatement = connection.prepareStatement(queryString);
-				ResultSet rsResultset = pStatement.executeQuery(); 
-				table.setModel(DbUtils.resultSetToTableModel(rsResultset));
-				
-				
-				pStatement.close();
-				rsResultset.close();
-				
-				
-			}
-			
-			
-			
-		} catch (Exception e2) {
-			System.out.println(e2);
-			System.out.println("this error in book button");
-			// TODO: handle exception
-		}
-		
-	}
 	
+	//------------------------------------------------------------------------------------
+
 	/**
 	 * Create the frame.
 	 */
-	public searchUI() {
+	public searchUIAuthors() {
 		
 		connection = sqlConnection.dbConnector(); //connect with sql server
 		
@@ -245,7 +169,7 @@ public class searchUI extends JFrame {
 				panelbackground.setLayout(null);
 				
 				JPanel panelBooksSelectSearch = new JPanel();
-				panelBooksSelectSearch.setBackground(SystemColor.inactiveCaptionBorder);
+				panelBooksSelectSearch.setBackground(SystemColor.controlHighlight);
 				panelBooksSelectSearch.setBounds(20, 11, 292, 49);
 				panelbackground.add(panelBooksSelectSearch);
 				panelBooksSelectSearch.setLayout(null);
@@ -256,24 +180,7 @@ public class searchUI extends JFrame {
 				panelBooksSelectSearch.add(lblNewLabel);
 				
 				JPanel panelAuthorSelectSearch = new JPanel();
-				panelAuthorSelectSearch.addMouseListener(new MouseAdapter() { //mouse on action
-					@Override
-					public void mouseEntered(MouseEvent e) {
-						setColouronMouse(panelAuthorSelectSearch);
-					}
-					@Override
-					public void mouseExited(MouseEvent e) {
-						panelAuthorSelectSearch.setBackground(SystemColor.controlHighlight);
-					}
-					@SuppressWarnings("deprecation")
-					@Override
-					public void mouseClicked(MouseEvent e) {
-						
-						new searchUIAuthors().show();;
-						dispose();
-					}
-				}); // mouse on action end
-				panelAuthorSelectSearch.setBackground(SystemColor.controlHighlight);
+				panelAuthorSelectSearch.setBackground(SystemColor.inactiveCaptionBorder);
 				panelAuthorSelectSearch.setBounds(334, 11, 292, 49);
 				panelbackground.add(panelAuthorSelectSearch);
 				panelAuthorSelectSearch.setLayout(null);
@@ -284,22 +191,6 @@ public class searchUI extends JFrame {
 				panelAuthorSelectSearch.add(lblAuthors);
 				
 				JPanel panelMembersSelectSearch = new JPanel();
-				panelMembersSelectSearch.addMouseListener(new MouseAdapter() {
-					@Override
-					public void mouseEntered(MouseEvent e) {
-						setColouronMouse(panelMembersSelectSearch);
-					}
-					@Override
-					public void mouseExited(MouseEvent e) {
-						panelMembersSelectSearch.setBackground(SystemColor.controlHighlight);
-					}
-					@SuppressWarnings("deprecation")
-					@Override
-					public void mouseClicked(MouseEvent e) {
-						new searchUIMembers().show();
-						dispose();
-					}
-				});
 				panelMembersSelectSearch.setBackground(SystemColor.controlHighlight);
 				panelMembersSelectSearch.setBounds(651, 11, 292, 49);
 				panelbackground.add(panelMembersSelectSearch);
@@ -311,22 +202,6 @@ public class searchUI extends JFrame {
 				panelMembersSelectSearch.add(lblMembers);
 				
 				JPanel panelLendingSelectSearch = new JPanel();
-				panelLendingSelectSearch.addMouseListener(new MouseAdapter() {
-					@Override
-					public void mouseEntered(MouseEvent e) {
-						setColouronMouse(panelLendingSelectSearch);
-					}
-					@Override
-					public void mouseExited(MouseEvent e) {
-						panelLendingSelectSearch.setBackground(SystemColor.controlHighlight);
-					}
-					@SuppressWarnings("deprecation")
-					@Override
-					public void mouseClicked(MouseEvent e) {
-						new searchUILending().show();
-						dispose();
-					}
-				});
 				panelLendingSelectSearch.setBackground(SystemColor.controlHighlight);
 				panelLendingSelectSearch.setBounds(966, 11, 292, 49);
 				panelbackground.add(panelLendingSelectSearch);
@@ -349,21 +224,6 @@ public class searchUI extends JFrame {
 				panelbody.add(textFieldSearch);
 				
 				JPanel searchpanel = new JPanel();
-				searchpanel.addMouseListener(new MouseAdapter() {
-					@Override
-					public void mouseEntered(MouseEvent e) {
-						setColouronMouse(searchpanel);
-					}
-					
-					@Override
-					public void mouseExited(MouseEvent e) {
-						searchpanel.setBackground(SystemColor.controlHighlight);
-					}
-					@Override
-					public void mouseClicked(MouseEvent e) {
-						search(); 
-					}
-				});
 				searchpanel.setLayout(null);
 				searchpanel.setBackground(SystemColor.controlHighlight);
 				searchpanel.setBounds(834, 23, 254, 47);
@@ -382,28 +242,17 @@ public class searchUI extends JFrame {
 						
 						if (searchByString == "Book ID") {
 							searchByString = "book_ID";
-							searchByRange = false;
 						}else if (searchByString == "Book Name") {
 							searchByString = "B_name";
-							searchByRange = false;
 						}else if (searchByString =="Author First Name") {
 							searchByString = "A_F_name";
-							searchByRange = false;
 						}else if (searchByString == "Author Last Name") {
 							searchByString = "A_L_name";
-							searchByRange = false;
 						}else if (searchByString == "Published Year") {
 							searchByString = "publish_year";
-							searchByRange = false;
-						}else if (searchByString == "Published Year Range") {
-							searchByString = "publish_year";
-							searchByRange = true;
-							
-							//System.out.println(searchByString);
 						}
 						else {
 							searchByString = "book_ID";
-							searchByRange = false;
 						}	
 						
 					}
@@ -418,31 +267,7 @@ public class searchUI extends JFrame {
 				comboBoxSearchTable.addItem("Author First Name");
 				comboBoxSearchTable.addItem("Author Last Name");
 				comboBoxSearchTable.addItem("Published Year");
-				comboBoxSearchTable.addItem("Published Year Range");
 				comboBoxSearchTable.setSelectedItem("Book_ID");
-				
-				
-				//-------------------------------------------------------Combo BoX EnD-----------------------------------
-				
-				textFrom = new JTextField();
-				textFrom.setBounds(551, 93, 232, 47);
-				panelbody.add(textFrom);
-				textFrom.setColumns(10);
-				
-				textTo = new JTextField();
-				textTo.setColumns(10);
-				textTo.setBounds(943, 93, 232, 47);
-				panelbody.add(textTo);
-				
-				JLabel lblNewLabel_2 = new JLabel("From");
-				lblNewLabel_2.setFont(new Font("Trebuchet MS", Font.BOLD, 20));
-				lblNewLabel_2.setBounds(484, 106, 57, 14);
-				panelbody.add(lblNewLabel_2);
-				
-				JLabel lblNewLabel_2_1 = new JLabel("To");
-				lblNewLabel_2_1.setFont(new Font("Trebuchet MS", Font.BOLD, 20));
-				lblNewLabel_2_1.setBounds(910, 106, 23, 14);
-				panelbody.add(lblNewLabel_2_1);
 				
 				JScrollPane scrollPane = new JScrollPane();
 				scrollPane.setBounds(10, 157, 1241, 337);
