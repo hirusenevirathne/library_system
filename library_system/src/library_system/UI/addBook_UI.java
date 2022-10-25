@@ -319,6 +319,17 @@ public class addBook_UI extends JFrame {
 					public void mouseExited(MouseEvent e) {
 						panelCancel.setBackground(UIManager.getColor("CheckBox.background"));
 					}
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						
+						textFieldAuthorID.setText("");
+						textFieldBookID.setText("");
+						textFieldBookName.setText("");
+						textFieldPubYear.setText("");
+						textFieldOtherDetails.setText("");
+					}
+					
+					
 				});
 				panelCancel.setBackground(UIManager.getColor("CheckBox.background"));
 				panelCancel.setBounds(991, 293, 252, 49);
