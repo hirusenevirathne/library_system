@@ -63,6 +63,43 @@ public class booksUI extends JFrame {
 	public void reSetColouronMouse( JPanel panel) {//create a method to change original button color when mouse is not on it
 		panel.setBackground(SystemColor.controlHighlight);		
 	}
+	
+	
+	
+	public void showTable() { //method for show the table 
+		try {
+			
+			String queryString = "SELECT \r\n"
+					+ "book_ID AS \"Book ID\",\r\n"
+					+ "A_F_name AS \"Author First Name\",\r\n"
+					+ "A_L_name AS \"Author Last Name\",\r\n"
+					+ "B_name AS \"Book Name\",\r\n"
+					+ "publish_year AS \"Published Year\",\r\n"
+					+ "Other_details AS \"Other Details\",\r\n"
+					+ "state AS \"Status\"\r\n"
+					+ "FROM books\r\n"
+					+ "JOIN author\r\n"
+					+ "	ON books.Author_ID = author.Author_id ;";
+			PreparedStatement pStatement = connection.prepareStatement(queryString);
+			ResultSet rsResultset = pStatement.executeQuery(); 
+			table.setModel(DbUtils.resultSetToTableModel(rsResultset));
+			
+			
+			pStatement.close();
+			rsResultset.close();
+			
+			
+			
+		} catch (Exception e2) {
+			System.out.println(e2);
+			System.out.println("thiss error in book button");
+			// TODO: handle exception
+		}
+		
+	}
+	
+	
+	
 	/**
 	 * Create the frame.
 	 */
@@ -311,6 +348,7 @@ public class booksUI extends JFrame {
 				lblAddAuthor.setFont(new Font("Trebuchet MS", Font.BOLD, 21));
 				lblAddAuthor.setBounds(153, 25, 139, 42);
 				panelAddAuthor.add(lblAddAuthor);
+				showTable();
 				
 				
 			

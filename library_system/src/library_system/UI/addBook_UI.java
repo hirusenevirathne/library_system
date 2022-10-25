@@ -27,6 +27,8 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class addBook_UI extends JFrame {
 
@@ -112,11 +114,6 @@ public class addBook_UI extends JFrame {
 			publishYear = textFieldPubYear.getText();
 			otherDetails = textFieldOtherDetails.getText();
 			
-			System.out.println(bookID);
-			System.out.println(authorID);
-			System.out.println(bookName);
-			System.out.println(publishYear);
-			System.out.println(otherDetails);
 			
 			String queryString = "INSERT INTO `library_system`.`books` (\r\n"
 					+ "`book_ID`, \r\n"
@@ -132,7 +129,7 @@ public class addBook_UI extends JFrame {
 					+ "'"+publishYear+"', \r\n"
 					+ "'"+otherDetails+"'\r\n"
 					+ ");";
-			System.out.println(queryString); //use this to check the errors in query
+			//System.out.println(queryString); //use this to check the errors in query
 			
 			
 			
@@ -152,6 +149,44 @@ public class addBook_UI extends JFrame {
 			// TODO: handle exception
 		}
 		
+	}
+	
+	
+	public Boolean validate_Save() {
+		boolean textFeildState = false;
+		
+		if (textFieldBookID.getText().equals("")) {
+			
+			textFeildState = false;
+			JOptionPane.showMessageDialog(null, "Book ID Required !");
+			textFieldBookID.requestFocus();
+			
+		}else if (textFieldAuthorID.getText().equals("")) {
+			
+			textFeildState = false;
+			JOptionPane.showMessageDialog(null, "Author ID Required !");
+			textFieldAuthorID.requestFocus();
+			
+		}else if (textFieldBookName.getText().equals("")) {
+			
+			textFeildState = false;
+			JOptionPane.showMessageDialog(null, "Book Name Required !");
+			textFieldBookName.requestFocus();
+			
+		}else if (textFieldPubYear.getText().equals("")) {
+			
+			textFeildState = false;
+			JOptionPane.showMessageDialog(null, "Published Year Required !");
+			textFieldPubYear.requestFocus();
+			
+		}
+		else {
+			textFeildState = true;
+
+		}
+		
+		
+		return textFeildState;
 	}
 	
 
@@ -263,11 +298,21 @@ public class addBook_UI extends JFrame {
 				backgroundpanel.add(lblPubYear);
 				
 				textFieldPubYear = new JTextField();
+				textFieldPubYear.addKeyListener(new KeyAdapter() {
+					@Override
+					public void keyTyped(KeyEvent e) { // allow to type numbers only
+						char check = e.getKeyChar();
+						if (!Character.isDigit(check) || check == KeyEvent.VK_BACK_SPACE || check == KeyEvent.VK_DELETE) {
+							e.consume();
+						}
+					}
+				});
 				textFieldPubYear.setFont(new Font("Trebuchet MS", Font.PLAIN, 19));
 				textFieldPubYear.setColumns(10);
 				textFieldPubYear.setBackground(SystemColor.inactiveCaptionBorder);
 				textFieldPubYear.setBounds(686, 225, 220, 27);
 				backgroundpanel.add(textFieldPubYear);
+				textFieldPubYear.setColumns(4);
 				
 				JLabel lblbookID_4 = new JLabel("Other Details :");
 				lblbookID_4.setFont(new Font("Trebuchet MS", Font.BOLD, 19));
@@ -294,7 +339,10 @@ public class addBook_UI extends JFrame {
 					}
 					@Override
 					public void mouseClicked(MouseEvent e) {
-						save();
+						
+						if (validate_Save()) { //check all the feilds are complete
+							save();
+						}
 						showTable();
 					}
 				});
@@ -336,7 +384,7 @@ public class addBook_UI extends JFrame {
 				backgroundpanel.add(panelCancel);
 				panelCancel.setLayout(null);
 				
-				JLabel lblCancel = new JLabel("Cancel");
+				JLabel lblCancel = new JLabel("Clear");
 				lblCancel.setBounds(93, 11, 61, 24);
 				lblCancel.setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
 				panelCancel.add(lblCancel);
@@ -347,6 +395,13 @@ public class addBook_UI extends JFrame {
 				
 				table = new JTable();
 				scrollPane.setViewportView(table);
+				
+				JLabel lblNewLabel = new JLabel("* Please only enter valid Data values");
+				lblNewLabel.setFont(new Font("Trebuchet MS", Font.BOLD, 20));
+				lblNewLabel.setBounds(381, 354, 361, 33);
+				backgroundpanel.add(lblNewLabel);
+				
+				
 				showTable();
 				//Back to Home BUtton ENDS
 	}
