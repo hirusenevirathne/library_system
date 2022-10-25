@@ -50,6 +50,7 @@ public class addAuthor_UI extends JFrame {
 		contentPane.setLayout(null);
 		
 		JPanel backgroundpanel = new JPanel();
+		backgroundpanel.setBackground(SystemColor.window);
 		backgroundpanel.setBounds(0, 0, 1281, 695);
 		contentPane.add(backgroundpanel);
 		backgroundpanel.setLayout(null);
@@ -98,6 +99,11 @@ public class addAuthor_UI extends JFrame {
 				lblbackico.setIcon(new ImageIcon(homeUI.class.getResource("/main/images/back small.png")));
 				lblbackico.setBounds(10, 11, 32, 31);
 				homebtn.add(lblbackico);
+				
+				JPanel panel = new JPanel();
+				panel.setBackground(SystemColor.info);
+				panel.setBounds(603, 322, 212, 152);
+				backgroundpanel.add(panel);
 				//Back to Home BUtton ENDS
 	}
 
