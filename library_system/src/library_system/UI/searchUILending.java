@@ -70,12 +70,27 @@ public class searchUILending extends JFrame {
 				try {
 					
 					String queryString = "SELECT \r\n"
-							+ "Mem_ID AS \"Member ID\",\r\n"
-							+ "F_name AS \"First Name\",\r\n"
-							+ "L_name AS \"Last Name\",\r\n"
-							+ "Contact_no AS \"Contact Number\" \r\n"
-							+ "FROM \r\n"
-							+ "library_system.members;";
+							+ "B.book_ID AS 'Book ID',\r\n"
+							+ "M.Mem_ID AS 'Member ID',\r\n"
+							+ "F_name AS 'First Name',\r\n"
+							+ "L_name AS 'Last Name',\r\n"
+							+ "Contact_no AS 'Contact Number',\r\n"
+							+ "lend_date AS 'Lend Date',\r\n"
+							+ "resubmit_date AS 'Re Submit Date',\r\n"
+							+ "B_name AS 'Book Name',\r\n"
+							+ "publish_year AS 'Published Year',\r\n"
+							+ "state AS 'Book Status'\r\n"
+							+ "\r\n"
+							+ "FROM lending L\r\n"
+							+ "JOIN books B\r\n"
+							+ "	ON L.book_ID = B.book_ID\r\n"
+							+ "JOIN members M\r\n"
+							+ "	ON L.Mem_ID = M.Mem_ID \r\n"
+							+ "ORDER BY L.Mem_ID;";
+							
+												
+					//System.out.println(queryString);
+					
 					PreparedStatement pStatement = connection.prepareStatement(queryString);
 					ResultSet rsResultset = pStatement.executeQuery(); 
 					table.setModel(DbUtils.resultSetToTableModel(rsResultset));
@@ -275,6 +290,116 @@ public class searchUILending extends JFrame {
 				panelbody.add(textFieldSearch);
 				
 				JPanel searchpanel = new JPanel();
+				searchpanel.addMouseListener(new MouseAdapter() {
+					
+					
+					@Override
+					public void mouseEntered(MouseEvent e) { //change the button color when mouse on it
+						setColouronMouse(searchpanel);
+					}
+					
+					@Override
+					public void mouseExited(MouseEvent e) { //change the button color back to normal
+						reSetColouronMouse(searchpanel);
+					}
+					
+					
+					//---------------------Search Part Starts----------------------------------
+					
+					
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						
+						try {
+							
+							if (searchByString == "M.Mem_ID"  ) {
+								
+								serchString = textFieldSearch.getText();
+								String queryString = "SELECT \r\n"
+										+ "B.book_ID AS 'Book ID',\r\n"
+										+ "M.Mem_ID AS 'Member ID',\r\n"
+										+ "F_name AS 'First Name',\r\n"
+										+ "L_name AS 'Last Name',\r\n"
+										+ "Contact_no AS 'Contact Number',\r\n"
+										+ "lend_date AS 'Lend Date',\r\n"
+										+ "resubmit_date AS 'Re Submit Date',\r\n"
+										+ "B_name AS 'Book Name',\r\n"
+										+ "publish_year AS 'Published Year',\r\n"
+										+ "state AS 'Book Status'\r\n"
+										+ "\r\n"
+										+ "FROM lending L\r\n"
+										+ "LEFT JOIN books B\r\n"
+										+ "	ON L.book_ID = B.book_ID\r\n"
+										+ "LEFT JOIN members M\r\n"
+										+ "	ON L.Mem_ID = M.Mem_ID \r\n"
+										+ "WHERE "+searchByString+" = '"+serchString+"'\r\n"
+										+ "ORDER BY L.Mem_ID;";
+								System.out.println(queryString); //use this to check the errors in query
+								
+								PreparedStatement pStatement = connection.prepareStatement(queryString);
+								ResultSet rsResultset = pStatement.executeQuery(); 
+								table.setModel(DbUtils.resultSetToTableModel(rsResultset));
+								
+								
+								pStatement.close();
+								rsResultset.close();
+								
+							}else if (searchByString == "B.book_ID") {
+								
+								serchString = textFieldSearch.getText();
+								String queryString = "SELECT \r\n"
+										+ "B.book_ID AS 'Book ID',\r\n"
+										+ "M.Mem_ID AS 'Member ID',\r\n"
+										+ "F_name AS 'First Name',\r\n"
+										+ "L_name AS 'Last Name',\r\n"
+										+ "Contact_no AS 'Contact Number',\r\n"
+										+ "lend_date AS 'Lend Date',\r\n"
+										+ "resubmit_date AS 'Re Submit Date',\r\n"
+										+ "B_name AS 'Book Name',\r\n"
+										+ "publish_year AS 'Published Year',\r\n"
+										+ "state AS 'Book Status'\r\n"
+										+ "\r\n"
+										+ "FROM lending L\r\n"
+										+ "LEFT JOIN books B\r\n"
+										+ "	ON L.book_ID = B.book_ID\r\n"
+										+ "LEFT JOIN members M\r\n"
+										+ "	ON L.Mem_ID = M.Mem_ID \r\n"
+										+ "WHERE "+searchByString+" = '%"+serchString+"%'\r\n"
+										+ "ORDER BY L.Mem_ID;";
+								System.out.println(queryString); //use this to check the errors in query
+								
+								PreparedStatement pStatement = connection.prepareStatement(queryString);
+								ResultSet rsResultset = pStatement.executeQuery(); 
+								table.setModel(DbUtils.resultSetToTableModel(rsResultset));
+								
+								
+								pStatement.close();
+								rsResultset.close();
+								
+							}else {
+								
+							}
+							
+								
+							}
+							
+							
+							
+							
+						catch (Exception e2) {
+							System.out.println(e2);
+							System.out.println("this error in book button");
+							// TODO: handle exception
+						}
+						
+					}
+				});
+				
+				
+				//---------------------Search Part End----------------------------------
+				
+				
+				
 				searchpanel.setLayout(null);
 				searchpanel.setBackground(SystemColor.controlHighlight);
 				searchpanel.setBounds(834, 23, 254, 47);
@@ -292,15 +417,15 @@ public class searchUILending extends JFrame {
 						searchByString = comboBoxSearchTable.getSelectedItem().toString();
 						
 						if (searchByString == "Book ID") {
-							searchByString = "book_ID";
-						}else if (searchByString == "Book Name") {
-							searchByString = "B_name";
-						}else if (searchByString =="Author First Name") {
-							searchByString = "A_F_name";
-						}else if (searchByString == "Author Last Name") {
-							searchByString = "A_L_name";
-						}else if (searchByString == "Published Year") {
-							searchByString = "publish_year";
+							searchByString = "B.book_ID";
+						}else if (searchByString == "Member ID") {
+							searchByString = "M.Mem_ID";
+						}else if (searchByString =="Lend Date") {
+							searchByString = "lend_date";
+						}else if (searchByString == "Resubmit Date") {
+							searchByString = "resubmit_date";
+						}else if (searchByString == "Author First Name") {
+							searchByString = "F_name";
 						}
 						else {
 							searchByString = "book_ID";
@@ -314,11 +439,11 @@ public class searchUILending extends JFrame {
 				panelbody.add(comboBoxSearchTable);
 				
 				comboBoxSearchTable.addItem("Book ID");
-				comboBoxSearchTable.addItem("Book Name");
+				comboBoxSearchTable.addItem("Member ID");
+				comboBoxSearchTable.addItem("Lend Date");
+				comboBoxSearchTable.addItem("Resubmit Date");
 				comboBoxSearchTable.addItem("Author First Name");
-				comboBoxSearchTable.addItem("Author Last Name");
-				comboBoxSearchTable.addItem("Published Year");
-				comboBoxSearchTable.setSelectedItem("Book_ID");
+				comboBoxSearchTable.setSelectedItem("Book ID");
 				
 				JScrollPane scrollPane = new JScrollPane();
 				scrollPane.setBounds(10, 157, 1241, 337);
@@ -326,6 +451,8 @@ public class searchUILending extends JFrame {
 				
 				table = new JTable();
 				scrollPane.setViewportView(table);
+				
+				showTable();
 				//Back to Home BUtton ENDS ---------------------------------------------------------------------
 				
 	}
