@@ -20,5 +20,6 @@
 	<classpathentry kind="lib" path="F:/My File/JAVA/windowBuilder/artifacts.jar"/>
 	<classpathentry kind="lib" path="F:/My File/JAVA/windowBuilder/content.jar"/>
 	<classpathentry kind="lib" path="F:/My File/JAVA/rs2xml.jar"/>
+	<classpathentry kind="lib" path="F:/My File/JAVA/jcalendar 1.4/lib/jcalendar-1.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
