@@ -343,8 +343,8 @@ public class searchUILending extends JFrame {
 										+ "	ON L.Mem_ID = M.Mem_ID \r\n"
 										+ "WHERE "+searchByString+" = '"+serchString+"'\r\n"
 										+ "ORDER BY L.Mem_ID;";
-								System.out.println(queryString); //use this to check the errors in query
-								System.out.println("");
+								//System.out.println(queryString); //use this to check the errors in query
+								//System.out.println("");
 								
 								PreparedStatement pStatement = connection.prepareStatement(queryString);
 								ResultSet rsResultset = pStatement.executeQuery(); 
@@ -376,8 +376,8 @@ public class searchUILending extends JFrame {
 										+ "	ON L.Mem_ID = M.Mem_ID \r\n"
 										+ "WHERE "+searchByString+" = '"+serchString+"'\r\n"
 										+ "ORDER BY L.Mem_ID;";
-								System.out.println(queryString); //use this to check the errors in query
-								System.out.println("");
+								//System.out.println(queryString); //use this to check the errors in query
+								//System.out.println("");
 								
 								PreparedStatement pStatement = connection.prepareStatement(queryString);
 								ResultSet rsResultset = pStatement.executeQuery(); 
@@ -410,8 +410,8 @@ public class searchUILending extends JFrame {
 										+ "WHERE lend_date BETWEEN '2000-01-01' AND '"+today+"'\r\n"
 										+ "ORDER BY lend_date;";
 								
-								System.out.println(queryString); //use this to check the errors in query
-								System.out.println("");
+								//System.out.println(queryString); //use this to check the errors in query
+								//System.out.println("");
 								
 								PreparedStatement pStatement = connection.prepareStatement(queryString);
 								ResultSet rsResultset = pStatement.executeQuery(); 
@@ -449,8 +449,8 @@ public class searchUILending extends JFrame {
 										+ "ORDER BY lend_date;\r\n"
 										+ "";
 								
-								System.out.println(queryString); //use this to check the errors in query
-								System.out.println("");
+								//System.out.println(queryString); //use this to check the errors in query
+								//System.out.println("");
 								
 								PreparedStatement pStatement = connection.prepareStatement(queryString);
 								ResultSet rsResultset = pStatement.executeQuery(); 
@@ -487,8 +487,8 @@ public class searchUILending extends JFrame {
 										+ "state = 'NOT_AVALIABLE'\r\n"
 										+ "ORDER BY lend_date;\r\n";
 								
-								System.out.println(queryString); //use this to check the errors in query
-								System.out.println("");
+								//System.out.println(queryString); //use this to check the errors in query
+								//System.out.println("");
 								
 								PreparedStatement pStatement = connection.prepareStatement(queryString);
 								ResultSet rsResultset = pStatement.executeQuery(); 
@@ -503,8 +503,8 @@ public class searchUILending extends JFrame {
 								
 								//serchString = textFieldSearch.getText();
 								
-								String selectDateString = ((JTextField)dateChooser.getDateEditor().getUiComponent()).getText(); ;
-								
+								String selectDateString = ((JTextField)dateChooser.getDateEditor().getUiComponent()).getText(); 
+								System.out.println(selectDateString);
 								
 								String queryString = "SELECT \r\n"
 										+ "B.book_ID AS 'Book ID',\r\n"
@@ -529,8 +529,8 @@ public class searchUILending extends JFrame {
 										+ "( state = 'NOT_AVALIABLE')\r\n"
 										+ "ORDER BY lend_date;";
 								
-								System.out.println(queryString); //use this to check the errors in query
-								System.out.println("");
+								//System.out.println(queryString); //use this to check the errors in query
+								//System.out.println("");
 								
 								PreparedStatement pStatement = connection.prepareStatement(queryString);
 								ResultSet rsResultset = pStatement.executeQuery(); 

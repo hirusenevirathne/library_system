@@ -76,7 +76,8 @@ public class addAuthor_UI extends JFrame {
 					+ "library_system.author\r\n"
 					+ ";";
 			
-			System.out.println(queryString);
+			//System.out.println(queryString);
+			
 			PreparedStatement pStatement = connection.prepareStatement(queryString);
 			ResultSet rsResultset = pStatement.executeQuery(); 
 			table.setModel(DbUtils.resultSetToTableModel(rsResultset));

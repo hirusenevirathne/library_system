@@ -340,7 +340,7 @@ public class addBook_UI extends JFrame {
 					@Override
 					public void mouseClicked(MouseEvent e) {
 						
-						if (validate_Save()) { //check all the feilds are complete
+						if (validate_Save()) { //check all the fields are complete
 							save();
 						}
 						showTable();
