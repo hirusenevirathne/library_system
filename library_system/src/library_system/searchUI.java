@@ -156,7 +156,7 @@ public class searchUI extends JFrame {
 						+ "WHERE "+searchByString+" LIKE \"%"+serchString+"%\"\r\n"
 						+ "ORDER BY B_name;\r\n"
 						+ "";
-				//System.out.println(queryString); //use this to check the errors in query
+				System.out.println(queryString); //use this to check the errors in query
 				
 				PreparedStatement pStatement = connection.prepareStatement(queryString);
 				ResultSet rsResultset = pStatement.executeQuery(); 

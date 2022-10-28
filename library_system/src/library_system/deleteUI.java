@@ -4,15 +4,23 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.SystemColor;
+import java.awt.TextField;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.Date;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import net.proteanit.sql.DbUtils;
+
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -21,11 +29,11 @@ import javax.swing.UIManager;
 public class deleteUI extends JFrame {
 
 	private JPanel contentPane;
-	private JTable table;
 	private JTextField textFieldBookID;
 	private JTextField textFieldMemID;
 	private String bookID = "";
 	private String memberID = "";
+	
 	
 	
 	/**
@@ -44,6 +52,7 @@ public class deleteUI extends JFrame {
 		});
 	}
 	Connection connection = null; //create the connection variable
+	private JTable table;
 	
 	public void setColouronMouse( JPanel panel) { //create a method to change button color when mouse is on it
 		panel.setBackground(new java.awt.Color(115, 163, 239));		
@@ -51,10 +60,119 @@ public class deleteUI extends JFrame {
 	public void reSetColouronMouse( JPanel panel) {//create a method to change original button color when mouse is not on it
 		panel.setBackground(SystemColor.controlHighlight);		
 	}
+	
+	
+	
+	
+	
+	public Boolean validate_TextFeild(JTextField textFieldBookID2) { //--------------------check all the fields are filled----------------------------------------------
+		boolean textFeildState = false;
+				
+				
+		String textFieldCheck = textFieldBookID2.getText();
+				
+		if (textFieldCheck.equals("")) {
+						
+			textFeildState = false;
+					
+			JOptionPane.showMessageDialog(null, "Search Box ID Required !");
+			textFieldBookID2.requestFocus();
+		
+		}
+		else {
+			textFeildState = true;
+					
+			System.out.println("Pass the validation ");
+
+		}
+					
+				
+		return textFeildState;
+	}//-----------------------------------------------validate_TextFeilds Method Ends--------------------------------------
+			
+			
+			
+	
+	public void showBookTable() {// Show the data about typed book id before delete it
+		
+		bookID = textFieldBookID.getText();
+		
+		try { 
+			
+			bookID = textFieldBookID.getText();
+			
+			String queryString = "SELECT \r\n"
+					+ "book_ID AS \"Book ID\",\r\n"
+					+ "B_name AS \"Book Name\",\r\n"
+					+ "publish_year AS \"Published Year\",\r\n"
+					+ "A.author_id AS \"Author ID\",\r\n"
+					+ "A_F_name AS \"Author First Name\",\r\n"
+					+ "A_L_name AS \"Author Last Name\",\r\n"
+					+ "Other_details AS \"Other Details\",\r\n"
+					+ "state AS \"Book States\"\r\n"
+					+ "FROM books B\r\n"
+					+ "JOIN author A\r\n"
+					+ "	ON B.Author_ID = A.Author_id\r\n"
+					+ "WHERE book_ID LIKE "+bookID+" \r\n"
+					+ "ORDER BY B_name;";
+			//System.out.println(queryString); //use this to check the errors in query
+			
+			PreparedStatement pStatement = connection.prepareStatement(queryString);
+			ResultSet rsResultset = pStatement.executeQuery(); 
+			table.setModel(DbUtils.resultSetToTableModel(rsResultset));
+			
+			
+			pStatement.close();
+			rsResultset.close();
+			
+		} catch (Exception e2) {
+			// TODO: handle exception
+			System.out.println(e2);
+		}
+	}
+	
+public void showMemberTable() {
+		
+		memberID = textFieldMemID.getText();
+		
+		try { // Show the data in typed book id before delete it
+			
+			bookID = textFieldBookID.getText();
+			
+			String queryString = "SELECT \r\n"
+					+ "Mem_ID AS \"Member ID\",\r\n"
+					+ "F_name AS \"First Name\",\r\n"
+					+ "L_name AS \"Last Name\",\r\n"
+					+ "Contact_no AS \"Contact Number\" \r\n"
+					+ "FROM \r\n"
+					+ "library_system.members\r\n"
+					+ "WHERE Mem_ID LIKE "+memberID+"\r\n"
+					+ "ORDER BY Mem_ID\r\n"
+					+ ";";
+			//System.out.println(queryString); //use this to check the errors in query
+			
+			PreparedStatement pStatement = connection.prepareStatement(queryString);
+			ResultSet rsResultset = pStatement.executeQuery(); 
+			table.setModel(DbUtils.resultSetToTableModel(rsResultset));
+			
+			
+			pStatement.close();
+			rsResultset.close();
+			
+		} catch (Exception e2) {
+			// TODO: handle exception
+			System.out.println(e2);
+		}
+	}
+	
+	
 	/**
 	 * Create the frame.
 	 */
 	public deleteUI() {
+		
+		connection = sqlConnection.dbConnector(); //connect with sql server
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1297, 734);
 		contentPane = new JPanel();
@@ -113,13 +231,6 @@ public class deleteUI extends JFrame {
 				lblbackico.setIcon(new ImageIcon(homeUI.class.getResource("/main/images/back small.png")));
 				lblbackico.setBounds(10, 11, 32, 31);
 				homebtn.add(lblbackico);
-				
-				JScrollPane scrollPane = new JScrollPane();
-				scrollPane.setBounds(10, 577, 1261, 107);
-				backgroundpanel.add(scrollPane);
-				
-				table = new JTable();
-				scrollPane.setViewportView(table);
 				
 				JLabel lblbookID = new JLabel("Book ID *   :");
 				lblbookID.setFont(new Font("Trebuchet MS", Font.BOLD, 19));
@@ -181,9 +292,17 @@ public class deleteUI extends JFrame {
 						panelBookIDSearch.setBackground(SystemColor.controlHighlight);
 						
 					}
-					
-					
-					
+										
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						
+						Boolean check = validate_TextFeild(textFieldBookID);
+						
+						if (check) {
+							
+							showBookTable();
+						}
+					}
 				});//--------------------------------------------------------BOOK SEARCH BUTTON END----------------------------
 				
 				
@@ -222,7 +341,15 @@ public class deleteUI extends JFrame {
 						
 					}
 					
-					
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						
+						Boolean check = validate_TextFeild(textFieldMemID);
+						
+						if (check) {
+							showMemberTable();
+						}
+					}
 				});//--------------------------------------------------------MEMBER SEARCH BUTTON END----------------------------
 				
 				
@@ -273,6 +400,13 @@ public class deleteUI extends JFrame {
 				lblNewLabel.setFont(new Font("Trebuchet MS", Font.BOLD, 13));
 				lblNewLabel.setBounds(371, 435, 506, 27);
 				backgroundpanel.add(lblNewLabel);
+				
+				JScrollPane scrollPane = new JScrollPane();
+				scrollPane.setBounds(10, 583, 1261, 101);
+				backgroundpanel.add(scrollPane);
+				
+				table = new JTable();
+				scrollPane.setViewportView(table);
 				//Back to Home BUtton ENDS 
 				
 				

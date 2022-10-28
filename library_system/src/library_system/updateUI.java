@@ -12,11 +12,12 @@ import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Connection;
 
 public class updateUI extends JFrame {
 
 	private JPanel contentPane;
-
+	Connection connection = null; //create the connection variable
 	/**
 	 * Launch the application.
 	 */
@@ -37,6 +38,9 @@ public class updateUI extends JFrame {
 	 * Create the frame.
 	 */
 	public updateUI() {
+		
+		connection = sqlConnection.dbConnector(); //connect with sql server
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1297, 734);
 		contentPane = new JPanel();
