@@ -319,7 +319,7 @@ public class receiveUI extends JFrame {
 		            if (result == JOptionPane.YES_OPTION) { //take the confirmation from the user
 		            	
 		            	
-		            	 try {//this check if the book is available or not-------------------------------
+		            	 try {//this check if the book is available or not-------------------------------(Validation Part)
 								
 				            	String queryString3 = "SELECT \r\n"
 					            		+ "state \r\n"
@@ -394,7 +394,7 @@ public class receiveUI extends JFrame {
 						JOptionPane.showMessageDialog(null, "Okay! data not added to server !" );
 						statusBook = false;
 						statusmember = false;
-					}
+					}//----------------------------------------------------(Validation pArt Ends)
 		            
 		            
 

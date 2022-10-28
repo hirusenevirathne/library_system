@@ -65,7 +65,7 @@ public class deleteUI extends JFrame {
 	
 	
 	
-	public Boolean validate_TextFeild(JTextField textFieldBookID2) { //--------------------check all the fields are filled----------------------------------------------
+	public Boolean validate_TextFeild(JTextField textFieldBookID2) { //--------------------check the fields is filled----------------------------------------------
 		boolean textFeildState = false;
 				
 				
@@ -88,7 +88,94 @@ public class deleteUI extends JFrame {
 					
 				
 		return textFeildState;
-	}//-----------------------------------------------validate_TextFeilds Method Ends--------------------------------------
+	}//----------------------------------------------------------------------------------validate_TextFeild Method Ends--------------------------------------
+	
+	
+	
+	public Boolean bookValidationBoolean() {//this check if the book is available or not--------------(Validation Part)
+		
+		boolean statusBook = false;
+		bookID = textFieldBookID.getText();
+		
+		try {
+			
+        	String queryString3 = "SELECT \r\n"
+        			+ "book_ID \r\n"
+        			+ "FROM library_system.books\r\n"
+        			+ "WHERE `book_ID` = '"+bookID+"'\r\n"
+        			+ ";\r\n"
+        			+ "";
+			
+			//System.out.println(queryString); //use this to check the errors in query
+			//System.out.println("");System.out.println("");
+			
+			PreparedStatement pStatement = connection.prepareStatement(queryString3);
+			ResultSet rsResultset = pStatement.executeQuery(); 
+			
+			if (rsResultset.next() == false) {
+		        System.out.println("ResultSet in empty in Java");
+		        JOptionPane.showMessageDialog(null, "Book Is Not Availble !");
+		        statusBook = false;
+		        
+		      } else {
+		    	  statusBook = true;
+		      }
+
+			pStatement.close();
+			rsResultset.close();
+        	
+        	
+		} catch (Exception e2) {
+			// TODO: handle exception
+			System.out.println(e2);
+		}
+		
+		return statusBook;
+        
+	}//---------------------------------------------------------------------------END of Book validation part
+	
+	
+	
+	public Boolean memberValidationBoolean() {//this check if the Member is available or not--------------(Validation Part)
+		
+		boolean statusMember = false;
+		bookID = textFieldBookID.getText();
+		
+		try {
+			
+        	String queryString4 = "SELECT \r\n"
+        			+ "Mem_ID\r\n"
+        			+ "FROM members\r\n"
+        			+ "WHERE Mem_ID = '"+memberID+"'  \r\n"
+        			+ ";";
+			
+			//System.out.println(queryString); //use this to check the errors in query
+			//System.out.println("");System.out.println("");
+			
+			PreparedStatement pStatement = connection.prepareStatement(queryString4);
+			ResultSet rsResultset = pStatement.executeQuery(); 
+			
+			if (rsResultset.next() == false) {
+		        System.out.println("ResultSet in empty in Java");
+		        JOptionPane.showMessageDialog(null, "Member Is Not Availble !");
+		        statusMember = false;
+		        
+		      } else {
+		    	  statusMember = true;
+		      }
+
+			pStatement.close();
+			rsResultset.close();
+        	
+        	
+		} catch (Exception e2) {
+			// TODO: handle exception
+			System.out.println(e2);
+		}
+		
+		return statusMember;
+        
+	}//---------------------------------------------------------------------------END of Member validation part
 			
 			
 			
@@ -99,7 +186,7 @@ public class deleteUI extends JFrame {
 		
 		try { 
 			
-			bookID = textFieldBookID.getText();
+			
 			
 			String queryString = "SELECT \r\n"
 					+ "book_ID AS \"Book ID\",\r\n"
@@ -116,6 +203,7 @@ public class deleteUI extends JFrame {
 					+ "WHERE book_ID LIKE "+bookID+" \r\n"
 					+ "ORDER BY B_name;";
 			//System.out.println(queryString); //use this to check the errors in query
+			//System.out.println("");System.out.println("");
 			
 			PreparedStatement pStatement = connection.prepareStatement(queryString);
 			ResultSet rsResultset = pStatement.executeQuery(); 
@@ -131,13 +219,13 @@ public class deleteUI extends JFrame {
 		}
 	}
 	
-public void showMemberTable() {
+	public void showMemberTable() {
 		
 		memberID = textFieldMemID.getText();
 		
 		try { // Show the data in typed book id before delete it
 			
-			bookID = textFieldBookID.getText();
+			
 			
 			String queryString = "SELECT \r\n"
 					+ "Mem_ID AS \"Member ID\",\r\n"
@@ -150,6 +238,7 @@ public void showMemberTable() {
 					+ "ORDER BY Mem_ID\r\n"
 					+ ";";
 			//System.out.println(queryString); //use this to check the errors in query
+			//System.out.println("");System.out.println("");
 			
 			PreparedStatement pStatement = connection.prepareStatement(queryString);
 			ResultSet rsResultset = pStatement.executeQuery(); 
@@ -164,6 +253,79 @@ public void showMemberTable() {
 			System.out.println(e2);
 		}
 	}
+	
+	
+	public void deleteBook() { //book Deleting Method
+		
+		bookID = textFieldBookID.getText();
+		
+		try {
+			
+			
+			
+			//add data in to Receive table
+			String queryString2 = "DELETE FROM `library_system`.`books` \r\n"
+					+ "WHERE (\r\n"
+					+ "`book_ID` = '"+bookID+"' \r\n"
+					+ ");";
+            //System.out.println(queryString2); //use this to check the errors in query
+            //System.out.println(""); System.out.println("");
+			
+
+			PreparedStatement pStatement2 = connection.prepareStatement(queryString2);
+			pStatement2.executeUpdate(queryString2);
+			//JOptionPane.showMessageDialog(null, "Book Lending data Saved Successfully.");
+			
+			pStatement2.close();
+			JOptionPane.showMessageDialog(null, "Okay! Book ID : "+bookID+" data Delete From server !" );
+            
+		} catch (Exception e2) {
+			// TODO: handle exception
+			System.out.println(e2);
+			JOptionPane.showMessageDialog(null, "Book ID Is Not Availble !");
+			
+			
+		}
+		
+		
+	}//book Deleting Method ENDs
+	
+	
+	
+	public void deleteMember() { //Member Deleting Method
+		
+		memberID = textFieldMemID.getText();
+		
+		try {
+			
+			
+			
+			//add data in to Receive table
+			String queryString2 = "DELETE FROM `library_system`.`members` \r\n"
+					+ "WHERE (\r\n"
+					+ "`Mem_ID` = '"+memberID+"'  \r\n"
+					+ ");";
+            //System.out.println(queryString2); //use this to check the errors in query
+            //System.out.println(""); System.out.println("");
+			
+
+			PreparedStatement pStatement2 = connection.prepareStatement(queryString2);
+			pStatement2.executeUpdate(queryString2);
+			//JOptionPane.showMessageDialog(null, "Book Lending data Saved Successfully.");
+			
+			pStatement2.close();
+			JOptionPane.showMessageDialog(null, "Okay! Member ID : "+memberID+" data Delete From  server !" );
+            
+		} catch (Exception e2) {
+			// TODO: handle exception
+			System.out.println(e2);
+			JOptionPane.showMessageDialog(null, "Member ID Is Not Availble !");
+			
+			
+		}
+		
+		
+	}//Member Deleting Method ENDs
 	
 	
 	/**
@@ -258,15 +420,36 @@ public void showMemberTable() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
 						
-
+						bookID = textFieldBookID.getText();
+						
+						int result = JOptionPane.showConfirmDialog(null,
+			                    "Are your Sure! Do you want to Delete This Book ID : "+bookID+"  ?",
+			                    "Confromation Message !",
+			                    JOptionPane.YES_NO_OPTION,
+			                    JOptionPane.WARNING_MESSAGE
+			                    );
+						
+						if (result == JOptionPane.YES_OPTION) {//take the confirmation from the user
+							
+							
+							
+							if (validate_TextFeild(textFieldBookID)) {
+								
+								if (bookValidationBoolean()) {
+									
+									System.out.println("book in the System");
+									deleteBook();
+								}
+							}else {
+								JOptionPane.showMessageDialog(null, "Somthing went Wrong Try Again Later");
+							}
+							
+						}
 
 						
 						
 						
 					}
-					
-					
-					
 				}); //--------------------------------------------------------BOOK DELETE BUTTON END----------------------------
 				
 				
@@ -377,7 +560,31 @@ public void showMemberTable() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
 						
+						memberID = textFieldMemID.getText();
 						
+						int result = JOptionPane.showConfirmDialog(null,
+			                    "Are your Sure! Do you want to Delete This Member ID : "+memberID+"  ?",
+			                    "Confromation Message !",
+			                    JOptionPane.YES_NO_OPTION,
+			                    JOptionPane.WARNING_MESSAGE
+			                    );
+						
+						if (result == JOptionPane.YES_OPTION) {//take the confirmation from the user
+							
+							
+							
+							if (validate_TextFeild(textFieldMemID)) {
+								
+								if (memberValidationBoolean()) {
+									
+									System.out.println("Member in the System");
+									deleteMember();;
+								}
+							}else {
+								JOptionPane.showMessageDialog(null, "Somthing went Wrong Try Again Later");
+							}
+							
+						}
 						
 						
 						
