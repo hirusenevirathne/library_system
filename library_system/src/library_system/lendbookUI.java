@@ -19,7 +19,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Savepoint;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JTextField;
 import javax.swing.UIManager;
@@ -105,6 +107,7 @@ public class lendbookUI extends JFrame {
 			pStatement.close();
 			rsResultset.close();
 			
+		
 			
 		} catch (Exception e2) {
 			System.out.println(e2);
@@ -122,39 +125,54 @@ public class lendbookUI extends JFrame {
 	
 	public Boolean validate_TextFeilds() { 
 		boolean textFeildState = false;
-		//String selectLendDateString = ((JTextField)dateChooser_Lend.getDateEditor().getUiComponent()).getText();
-		//String selectResubmitDateString = ((JTextField)dateChooser_Resubmit.getDateEditor().getUiComponent()).getText();
+		boolean allstatus = true;
+		Date  selectLendDate = dateChooser_Lend.getDate();
+		Date selectResubmitDate = dateChooser_Resubmit.getDate();
 		
-		if (textFieldBookID.getText().equals("")) {
+		
+		
+		
+		while (allstatus) {
 			
-			textFeildState = false;
-			JOptionPane.showMessageDialog(null, "Book ID Required !");
-			textFieldBookID.requestFocus();
-			
-		}else if (textFieldMemberID.getText().equals("")) {
-			
-			textFeildState = false;
-			JOptionPane.showMessageDialog(null, "Member ID Required !");
-			textFieldMemberID.requestFocus();
-			/*
-		}else if ( selectLendDateString != null ) {
-			
-			textFeildState = false;
-			JOptionPane.showMessageDialog(null, "Lend Date Required !");
-			
-			
-		}else if (selectResubmitDateString != null ) {
-			
-			textFeildState = false;
-			JOptionPane.showMessageDialog(null, "Resubmit Date  Required !");
-			*/
-			
-		}
-		else {
-			textFeildState = true;
-			System.out.println("Pass the validation ");
+			if (textFieldBookID.getText().equals("")) {
+				
+				textFeildState = false;
+				allstatus = false;
+				JOptionPane.showMessageDialog(null, "Book ID Required !");
+				textFieldBookID.requestFocus();
+				
+			}else if (textFieldMemberID.getText().equals("")) {
+				
+				textFeildState = false;
+				allstatus = false;
+				JOptionPane.showMessageDialog(null, "Member ID Required !");
+				textFieldMemberID.requestFocus();
+				
+			}else if ( selectLendDate == null ) {
+				
+				textFeildState = false;
+				allstatus = false;
+				JOptionPane.showMessageDialog(null, "Lend Date Required !");
+				dateChooser_Lend.grabFocus();
+				
+				
+			}else if (selectResubmitDate == null ) {
+				
+				textFeildState = false;
+				allstatus = false;
+				JOptionPane.showMessageDialog(null, "Resubmit Date  Required !");
+				dateChooser_Resubmit.grabFocus();
+				
+			}
+			else {
+				textFeildState = true;
+				allstatus = false;
+				System.out.println("Pass the validation ");
 
+			}
+			
 		}
+		
 		
 		
 		return textFeildState;
@@ -355,7 +373,7 @@ public class lendbookUI extends JFrame {
 					            //-------------------------------------------------------------
 					            
 					            
-					            try {//this check if the book is available or not-------------------------------
+					            try {//this check if the Member is available or not-------------------------------
 									
 					            	String queryString4 = "SELECT \r\n"
 					            			+ "Mem_ID\r\n"
@@ -414,13 +432,13 @@ public class lendbookUI extends JFrame {
 				            			+ "AND state = 'AVAILABLE'\r\n"
 				            			+ ";";
 								
-								System.out.println(queryString1);//use this to check the errors in query
-								System.out.println("");System.out.println("");
+								//System.out.println(queryString1);//use this to check the errors in query
+								//System.out.println("");System.out.println("");
 								
 
 								PreparedStatement pStatement1 = connection.prepareStatement(queryString1);
 								pStatement1.executeUpdate(queryString1);
-								JOptionPane.showMessageDialog(null, "Book Status Update Successfully.");
+								//JOptionPane.showMessageDialog(null, "Book Status Update Successfully.");
 								
 								pStatement1.close();
 						
@@ -452,15 +470,16 @@ public class lendbookUI extends JFrame {
 											+ "'"+selectLendDateString+"', \r\n"
 											+ "'"+selectResubmitDateString+"'\r\n"
 											+ ");";
-					                System.out.println(queryString2); //use this to check the errors in query
-					                System.out.println(""); System.out.println("");
+					                //System.out.println(queryString2); //use this to check the errors in query
+					                //System.out.println(""); System.out.println("");
 									
 
 					    			PreparedStatement pStatement2 = connection.prepareStatement(queryString2);
 					    			pStatement2.executeUpdate(queryString2);
-					    			JOptionPane.showMessageDialog(null, "Book Lending data Saved Successfully.");
+					    			//JOptionPane.showMessageDialog(null, "Book Lending data Saved Successfully.");
 					    			
 					    			pStatement2.close();
+					    			JOptionPane.showMessageDialog(null, "Okay! data added to server !" );
 					                
 								} catch (Exception e2) {
 									// TODO: handle exception
@@ -476,12 +495,7 @@ public class lendbookUI extends JFrame {
 						}
 			            
 			            
-			            
-			            
-						
-						
-						
-						
+			            //----------------------------------------------- End In save button function --------------------------------------
 			          
 		                
 		                

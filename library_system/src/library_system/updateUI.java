@@ -46,6 +46,7 @@ public class updateUI extends JFrame {
 		contentPane.setLayout(null);
 		
 		JPanel backgroundpanel = new JPanel();
+		backgroundpanel.setBackground(SystemColor.window);
 		backgroundpanel.setBounds(0, 0, 1281, 695);
 		contentPane.add(backgroundpanel);
 		backgroundpanel.setLayout(null);

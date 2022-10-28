@@ -6,17 +6,28 @@ import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Connection;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JTable;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.UIManager;
 
 public class deleteUI extends JFrame {
 
 	private JPanel contentPane;
-
+	private JTable table;
+	private JTextField textFieldBookID;
+	private JTextField textFieldMemID;
+	private String bookID = "";
+	private String memberID = "";
+	
+	
 	/**
 	 * Launch the application.
 	 */
@@ -32,7 +43,14 @@ public class deleteUI extends JFrame {
 			}
 		});
 	}
-
+	Connection connection = null; //create the connection variable
+	
+	public void setColouronMouse( JPanel panel) { //create a method to change button color when mouse is on it
+		panel.setBackground(new java.awt.Color(115, 163, 239));		
+	}
+	public void reSetColouronMouse( JPanel panel) {//create a method to change original button color when mouse is not on it
+		panel.setBackground(SystemColor.controlHighlight);		
+	}
 	/**
 	 * Create the frame.
 	 */
@@ -46,6 +64,7 @@ public class deleteUI extends JFrame {
 		contentPane.setLayout(null);
 		
 		JPanel backgroundpanel = new JPanel();
+		backgroundpanel.setBackground(SystemColor.window);
 		backgroundpanel.setBounds(0, 0, 1281, 695);
 		contentPane.add(backgroundpanel);
 		backgroundpanel.setLayout(null);
@@ -94,10 +113,169 @@ public class deleteUI extends JFrame {
 				lblbackico.setIcon(new ImageIcon(homeUI.class.getResource("/main/images/back small.png")));
 				lblbackico.setBounds(10, 11, 32, 31);
 				homebtn.add(lblbackico);
+				
+				JScrollPane scrollPane = new JScrollPane();
+				scrollPane.setBounds(10, 577, 1261, 107);
+				backgroundpanel.add(scrollPane);
+				
+				table = new JTable();
+				scrollPane.setViewportView(table);
+				
+				JLabel lblbookID = new JLabel("Book ID *   :");
+				lblbookID.setFont(new Font("Trebuchet MS", Font.BOLD, 19));
+				lblbookID.setBounds(50, 213, 126, 27);
+				backgroundpanel.add(lblbookID);
+				
+				textFieldBookID = new JTextField();
+				textFieldBookID.setFont(new Font("Trebuchet MS", Font.PLAIN, 19));
+				textFieldBookID.setColumns(10);
+				textFieldBookID.setBackground(SystemColor.inactiveCaptionBorder);
+				textFieldBookID.setBounds(186, 213, 246, 27);
+				backgroundpanel.add(textFieldBookID);
+				
+				JPanel panelBookDelete = new JPanel();
+				panelBookDelete.addMouseListener(new MouseAdapter() { //--------BOOK DELETE BUTTON ----------------------------
+					@Override
+					public void mouseEntered(MouseEvent e) {
+						
+						panelBookDelete.setBackground(new Color(255, 102, 102));
+					}
+					@Override
+					public void mouseExited(MouseEvent e) {
+						panelBookDelete.setBackground(UIManager.getColor("CheckBox.background"));
+					}
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						
+
+
+						
+						
+						
+					}
+					
+					
+					
+				}); //--------------------------------------------------------BOOK DELETE BUTTON END----------------------------
+				
+				
+				
+				panelBookDelete.setLayout(null);
+				panelBookDelete.setBackground(SystemColor.controlHighlight);
+				panelBookDelete.setBounds(783, 185, 252, 55);
+				backgroundpanel.add(panelBookDelete);
+				
+				JLabel lblDelete = new JLabel("Delete");
+				lblDelete.setFont(new Font("Trebuchet MS", Font.BOLD, 27));
+				lblDelete.setBounds(75, 11, 101, 33);
+				panelBookDelete.add(lblDelete);
+				
+				JPanel panelBookIDSearch = new JPanel();
+				panelBookIDSearch.addMouseListener(new MouseAdapter() { //--------BOOK SEARCH BUTTON ----------------------------
+					@Override
+					public void mouseEntered(MouseEvent e) {
+						setColouronMouse(panelBookIDSearch);
+					}
+					@Override
+					public void mouseExited(MouseEvent e) {
+						panelBookIDSearch.setBackground(SystemColor.controlHighlight);
+						
+					}
+					
+					
+					
+				});//--------------------------------------------------------BOOK SEARCH BUTTON END----------------------------
+				
+				
+				
+				panelBookIDSearch.setLayout(null);
+				panelBookIDSearch.setBackground(SystemColor.menu);
+				panelBookIDSearch.setBounds(477, 185, 252, 55);
+				backgroundpanel.add(panelBookIDSearch);
+				
+				JLabel lblSearch = new JLabel("Search");
+				lblSearch.setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
+				lblSearch.setBounds(93, 11, 61, 24);
+				panelBookIDSearch.add(lblSearch);
+				
+				JLabel lblMemberId = new JLabel("Member ID *   :");
+				lblMemberId.setFont(new Font("Trebuchet MS", Font.BOLD, 19));
+				lblMemberId.setBounds(50, 327, 138, 27);
+				backgroundpanel.add(lblMemberId);
+				
+				textFieldMemID = new JTextField();
+				textFieldMemID.setFont(new Font("Trebuchet MS", Font.PLAIN, 19));
+				textFieldMemID.setColumns(10);
+				textFieldMemID.setBackground(SystemColor.inactiveCaptionBorder);
+				textFieldMemID.setBounds(186, 327, 246, 27);
+				backgroundpanel.add(textFieldMemID);
+				
+				JPanel panelMemIDSearch = new JPanel();
+				panelMemIDSearch.addMouseListener(new MouseAdapter() {//--------MEMBER SEARCH BUTTON ----------------------------
+					@Override
+					public void mouseEntered(MouseEvent e) {
+						setColouronMouse(panelMemIDSearch);
+					}
+					@Override
+					public void mouseExited(MouseEvent e) {
+						panelMemIDSearch.setBackground(SystemColor.controlHighlight);
+						
+					}
+					
+					
+				});//--------------------------------------------------------MEMBER SEARCH BUTTON END----------------------------
+				
+				
+				panelMemIDSearch.setLayout(null);
+				panelMemIDSearch.setBackground(SystemColor.menu);
+				panelMemIDSearch.setBounds(477, 299, 252, 55);
+				backgroundpanel.add(panelMemIDSearch);
+				
+				JLabel lblSearch_1 = new JLabel("Search");
+				lblSearch_1.setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
+				lblSearch_1.setBounds(93, 11, 61, 24);
+				panelMemIDSearch.add(lblSearch_1);
+				
+				JPanel panelMemDelete = new JPanel();
+				panelMemDelete.addMouseListener(new MouseAdapter() {//--------MEMBER DELETE BUTTON ----------------------------
+					@Override
+					public void mouseEntered(MouseEvent e) {
+						
+						panelMemDelete.setBackground(new Color(255, 102, 102));
+					}
+					@Override
+					public void mouseExited(MouseEvent e) {
+						panelMemDelete.setBackground(UIManager.getColor("CheckBox.background"));
+					}
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						
+						
+						
+						
+						
+						
+					}
+				});//--------------------------------------------------------MEMBER DELETE BUTTON END----------------------------
+				
+				
+				panelMemDelete.setLayout(null);
+				panelMemDelete.setBackground(SystemColor.controlHighlight);
+				panelMemDelete.setBounds(783, 299, 252, 55);
+				backgroundpanel.add(panelMemDelete);
+				
+				JLabel lblDelete_1 = new JLabel("Delete");
+				lblDelete_1.setFont(new Font("Trebuchet MS", Font.BOLD, 27));
+				lblDelete_1.setBounds(76, 11, 101, 33);
+				panelMemDelete.add(lblDelete_1);
+				
+				JLabel lblNewLabel = new JLabel("Warning This action will permanently Delete the Data Record From the Database");
+				lblNewLabel.setFont(new Font("Trebuchet MS", Font.BOLD, 13));
+				lblNewLabel.setBounds(371, 435, 506, 27);
+				backgroundpanel.add(lblNewLabel);
 				//Back to Home BUtton ENDS 
 				
 				
 				
 	}
-
 }

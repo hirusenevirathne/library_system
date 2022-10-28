@@ -17,7 +17,7 @@ public class sqlConnection {
 		try {
 			
 			Connection connection = DriverManager.getConnection(url,username,password); //connect with the database
-			System.out.println("Connect to the database");
+			//System.out.println("Connect to the database");
 			return connection;
 			
 		} catch (Exception e) {
