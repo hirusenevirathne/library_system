@@ -17,6 +17,7 @@ import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Savepoint;
 import java.text.SimpleDateFormat;
 
@@ -113,7 +114,13 @@ public class lendbookUI extends JFrame {
 		
 	}
 	
-	public Boolean validate_Save() { //check all the fields are filled-------------------------------------------
+	
+	
+	
+	//----------------------check all the fields are filled----------------------------------------------
+	
+	
+	public Boolean validate_TextFeilds() { 
 		boolean textFeildState = false;
 		//String selectLendDateString = ((JTextField)dateChooser_Lend.getDateEditor().getUiComponent()).getText();
 		//String selectResubmitDateString = ((JTextField)dateChooser_Resubmit.getDateEditor().getUiComponent()).getText();
@@ -154,153 +161,13 @@ public class lendbookUI extends JFrame {
 	}
 	
 	
+	//---------------------------validate_TextFeilds Method Ends--------------------------------------
 	
 		 
 	
 	
 	
-@SuppressWarnings("unused")
-public void save() { //------------------------- SAVE Method ----------------------------------
-		
-	/*
-		try {
-			bookID = textFieldBookID.getText();
-			memberID = textFieldMemberID.getText();
-			bookStatusString 
-			
-			String selectLendDateString = ((JTextField)dateChooser_Lend.getDateEditor().getUiComponent()).getText();
-			String selectResubmitDateString = ((JTextField)dateChooser_Resubmit.getDateEditor().getUiComponent()).getText();
-			
-			//SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-			//String selectLendDateString = dateFormat.format(dateChooser_Lend.getDate());
-			//String selectResubmitDateString = dateFormat.format(dateChooser_Resubmit.getDate());
-			
-			
-			
-			System.out.println(selectLendDateString);
-			System.out.println(selectResubmitDateString);
-			
-			
-			
-			String checkStatuString = "SELECT \r\n" //check and get book AVAILABLE or NOT AVAILABLE
-					+ "state\r\n"
-					+ "FROM books\r\n"
-					+ "WHERE book_ID = '"+bookID+"'  \r\n"
-					+ ";\r\n"
-					+ ""  ;
-			//System.out.println(checkStatuString);
-			//System.out.println(""); System.out.println("");
-						
-			ResultSet rsResultset2 = connection.createStatement().executeQuery(checkStatuString);
-			
-			if (rsResultset2.next()) {
-			    bookStatusString = rsResultset2.getString(1);
-			    System.out.println(bookStatusString);
-			}else {
-				bookStatusString = "";
-			}
-			
-			
-			
 
-			String checkMemberString =   //check and get Member AVAILABLE or NOT AVAILABLE
-					"SELECT \r\n"
-					+ "Mem_ID\r\n"
-					+ "FROM members\r\n"
-					+ "WHERE Mem_ID = '"+memberID+"'  \r\n"
-					+ ";"  ;
-			//System.out.println(checkMemberString);
-			//System.out.println(""); System.out.println("");
-						
-			ResultSet rsResultset3 = connection.createStatement().executeQuery(checkMemberString);
-			
-			if (rsResultset3.next()) {
-				memberIDString = rsResultset3.getString(1);
-			    System.out.println(memberIDString);
-			}else {
-				memberIDString = "";
-			}
-			
-			
-			
-			
-			
-			if (bookStatusString == "NOT_AVALIABLE") { // check validation and save data
-				
-				JOptionPane.showMessageDialog(null, "You Can't lend this Book it's Alreday Lended !");
-				
-			}else if ( memberIDString == null ) {
-				
-				JOptionPane.showMessageDialog(null, "Member ID is not Valid !");
-				
-			}else if (bookStatusString == "AVALIABLE" || memberIDString != null ) {
-				
-				
-				
-				String queryString = "INSERT INTO \r\n"  //add data in to lending table
-						+ "`library_system`.`lending` (\r\n"
-						+ "`book_ID`, \r\n"
-						+ "`Mem_ID`, \r\n"
-						+ "`lend_date`, \r\n"
-						+ "`resubmit_date`\r\n"
-						+ ") \r\n"
-						+ "VALUES (\r\n"
-						+ "'"+bookID+"', \r\n"
-						+ "'"+memberID+"', \r\n"
-						+ "'"+selectLendDateString+"', \r\n"
-						+ "'"+selectResubmitDateString+"'\r\n"
-						+ ");";
-				System.out.println(queryString); //use this to check the errors in query
-				System.out.println(""); System.out.println("");
-				
-				
-				PreparedStatement pStatement = connection.prepareStatement(queryString);
-				pStatement.executeUpdate(queryString);
-				
-				pStatement.close();
-				
-				
-				String queryString1 = "UPDATE `library_system`.`books` \r\n" //update the status in book table as "NOT_AVALIABLE"
-						+ "SET \r\n"
-						+ "`state` = 'NOT_AVALIABLE' \r\n"
-						+ "WHERE (\r\n"
-						+ "`book_ID` = '"+bookID+"'\r\n"
-						+ ");\r\n"
-						+ "";
-				System.out.println(queryString); //use this to check the errors in query
-				System.out.println(""); System.out.println("");
-				
-				
-				PreparedStatement pStatement1 = connection.prepareStatement(queryString1);
-				pStatement.executeUpdate(queryString);
-				JOptionPane.showMessageDialog(null, "Data Saved Successfully.");
-				
-				pStatement1.close();
-				
-				JOptionPane.showMessageDialog(null, "Data added to server !" );
-				
-			}
-			else {
-				System.out.println("Save mthods not run");
-			}
-			
-			
-			rsResultset3.close();
-			rsResultset2.close();
-			
-			
-			
-		} catch (Exception e2) {
-			JOptionPane.showMessageDialog(null, "Something went wrong In Save Method.");
-			System.out.println(e2);
-			System.out.println("this error in Save button");
-			// TODO: handle exception
-		}
-		*/
-	}
-	
-	
-	//------------------------------------------------------------------------------------
 
 
 	
@@ -309,7 +176,7 @@ public void save() { //------------------------- SAVE Method -------------------
 	 */
 	public lendbookUI() {
 		
-		connection = sqlConnection.dbConnector(); //connect with sql server
+		connection = sqlConnection.dbConnector(); //connect with SQL server
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1297, 734);
@@ -429,131 +296,113 @@ public void save() { //------------------------- SAVE Method -------------------
 					
 					
 					@Override
-					public void mouseClicked(MouseEvent e) {
+					public void mouseClicked(MouseEvent e) { //save button click ------------------------------------
 						
 						
-						try {
-							
-							if (validate_Save()) {
-								
-								int result = JOptionPane.showConfirmDialog(null,
-										"Are your Sure! Do you want to Lend This Book "+bookID+" to This Member "+memberID+" ?",
-										"Confromation Message !",
-										JOptionPane.YES_NO_OPTION,
-										JOptionPane.WARNING_MESSAGE
-										);
-								
-								if (result == JOptionPane.YES_OPTION) {
-									
-									
-									bookID = textFieldBookID.getText();
-									memberID = textFieldMemberID.getText();
-									
-									String selectLendDateString = ((JTextField)dateChooser_Lend.getDateEditor().getUiComponent()).getText(); 
-									String selectResubmitDateString = ((JTextField)dateChooser_Resubmit.getDateEditor().getUiComponent()).getText(); 
-									bookID = textFieldBookID.getText();
-									memberID = textFieldMemberID.getText();
-									
-									System.out.println(selectLendDateString);
-									System.out.println(selectResubmitDateString);
-									
-									
-									
-									try {
-										String queryString = "INSERT INTO \r\n"  //add data in to lending table
-												+ "`library_system`.`lending` (\r\n"
-												+ "`book_ID`, \r\n"
-												+ "`Mem_ID`, \r\n"
-												+ "`lend_date`, \r\n"
-												+ "`resubmit_date`\r\n"
-												+ ") \r\n"
-												+ "VALUES (\r\n"
-												+ "'"+bookID+"', \r\n"
-												+ "'"+memberID+"', \r\n"
-												+ "'"+selectLendDateString+"', \r\n"
-												+ "'"+selectResubmitDateString+"'\r\n"
-												+ ");";
-										System.out.println(queryString); //use this to check the errors in query
-										System.out.println(""); System.out.println("");
-										
-										
-										PreparedStatement pStatement = connection.prepareStatement(queryString);
-										pStatement.executeUpdate(queryString);
-										
-										pStatement.close();
-										
-										
-										String queryString1 = "UPDATE `library_system`.`books` \r\n" //update the status in book table as "NOT_AVALIABLE"
-												+ "SET \r\n"
-												+ "`state` = 'NOT_AVALIABLE' \r\n"
-												+ "WHERE (\r\n"
-												+ "`book_ID` = '"+bookID+"'\r\n"
-												+ ");\r\n"
-												+ "";
-										System.out.println(queryString1); //use this to check the errors in query
-										System.out.println(""); System.out.println("");
-										
-										
-										PreparedStatement pStatement1 = connection.prepareStatement(queryString1);
-										pStatement1.executeUpdate(queryString1);
-										JOptionPane.showMessageDialog(null, "Data Saved Successfully.");
-										
-										pStatement1.close();
-										
-										JOptionPane.showMessageDialog(null, "Data added to server !" );
-									} catch (Exception e2) {
-										// TODO: handle exception
-										System.out.println(e2);
-									}
-									
-									
-									
-									
-								}else {
-									JOptionPane.showMessageDialog(null, "Okay! data not added to server !" );
-								}
-								
-								
-							}
-						
-							
-							
-							
-						} catch (Exception e2) {
-							// TODO: handle exception
+						bookID = textFieldBookID.getText();
+			            memberID = textFieldMemberID.getText();
+			            
+			            String selectLendDateString = ((JTextField)dateChooser_Lend.getDateEditor().getUiComponent()).getText(); 
+			            String selectResubmitDateString = ((JTextField)dateChooser_Resubmit.getDateEditor().getUiComponent()).getText(); 
+			            bookID = textFieldBookID.getText();
+			            memberID = textFieldMemberID.getText();
+			            boolean status = false;
+			            
+			            int result = JOptionPane.showConfirmDialog(null,
+			                    "Are your Sure! Do you want to Lend This Book "+bookID+" to This Member "+memberID+" ?",
+			                    "Confromation Message !",
+			                    JOptionPane.YES_NO_OPTION,
+			                    JOptionPane.WARNING_MESSAGE
+			                    );
+			            
+			            if (result == JOptionPane.YES_OPTION) { //take the confirmation from the user
+			            	status = true;
+						}else {
+							JOptionPane.showMessageDialog(null, "Okay! data not added to server !" );
 						}
-						
-						
-						
-						/*
-						try {
-							
-							int result = JOptionPane.showConfirmDialog(null,
-									"Are your Sure! Do you want to Lend This Book "+bookID+" to This Member "+memberID+" ?",
-									"Confromation Message !",
-									JOptionPane.YES_NO_OPTION,
-									JOptionPane.WARNING_MESSAGE
-									);
-							if (result == JOptionPane.YES_OPTION) {
+			            
+			            
+			            while (status) {
+			            	
+			            	try {
+				            	
+				            	//update the status in book table as "NOT_AVALIABLE"
+				            	String queryString1 = "UPDATE `library_system`.`books` \r\n"
+				            			+ "SET \r\n"
+				            			+ "state = 'NOT_AVAILABLE' \r\n"
+				            			+ "WHERE `book_ID` = '"+bookID+"'\r\n"
+				            			+ "AND state = 'AVAILABLE'\r\n"
+				            			+ ";";
 								
-								if (validate_Save()) { //check all the fields are complete
-									
-									save();
-									
-								}
-							}else {
-								JOptionPane.showMessageDialog(null, "Okay! data not added to server !" );
+								System.out.println(queryString1);//use this to check the errors in query
+								System.out.println("");System.out.println("");
+								
+
+								PreparedStatement pStatement1 = connection.prepareStatement(queryString1);
+								pStatement1.executeUpdate(queryString1);
+								JOptionPane.showMessageDialog(null, "Book Status Update Successfully.");
+								
+								pStatement1.close();
+						
+								
+							} catch (Exception e2) {
+								// TODO: handle exception
+								System.out.println(e2);
+								JOptionPane.showMessageDialog(null, "Book ID Is Not Availble !");
+								status = false;
 							}
-							
-							
-						} catch (Exception e2) {
-							// TODO: handle exception
-							System.out.println(e2);
+			            	
+			            	
+			            	if (status) {
+								
+			            		try {
+									
+									//add data in to lending table
+									String queryString2 = "INSERT INTO \r\n"
+											+ "`library_system`.`lending` (\r\n"
+											+ "`book_ID`, \r\n"
+											+ "`Mem_ID`, \r\n"
+											+ "`lend_date`, \r\n"
+											+ "`resubmit_date`\r\n"
+											+ ") \r\n"
+											+ "VALUES (\r\n"
+											+ "'"+bookID+"', \r\n"
+											+ "'"+memberID+"', \r\n"
+											+ "'"+selectLendDateString+"', \r\n"
+											+ "'"+selectResubmitDateString+"'\r\n"
+											+ ");";
+					                System.out.println(queryString2); //use this to check the errors in query
+					                System.out.println(""); System.out.println("");
+									
+
+					    			PreparedStatement pStatement2 = connection.prepareStatement(queryString2);
+					    			pStatement2.executeUpdate(queryString2);
+					    			JOptionPane.showMessageDialog(null, "Book Lending data Saved Successfully.");
+					    			
+					    			pStatement2.close();
+					                
+								} catch (Exception e2) {
+									// TODO: handle exception
+									System.out.println(e2);
+									JOptionPane.showMessageDialog(null, "Member ID Is Not Availble !");
+									status = false;
+								}
+							}
+			            	
+			            	status = false;
+			            	
 						}
-						*/
+			            
+			            
+			            
+			            
 						
 						
 						
+						
+			          
+		                
+		                
 						
 						showTable();
 					}
@@ -572,7 +421,6 @@ public void save() { //------------------------- SAVE Method -------------------
 				panelCancel.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseEntered(MouseEvent e) {
-						//panel.setBackground(new java.awt.Color(115, 163, 239));
 						panelCancel.setBackground(SystemColor.info);
 					}
 					@Override

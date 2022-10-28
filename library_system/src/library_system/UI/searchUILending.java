@@ -71,7 +71,7 @@ public class searchUILending extends JFrame {
 				panel.setBackground(SystemColor.controlHighlight);		
 			}
 			
-			public void showTable() { //method for show the table 
+			public void showTable() { //method for show the table -------------------------------
 				try {
 					
 					String queryString = "SELECT \r\n"
