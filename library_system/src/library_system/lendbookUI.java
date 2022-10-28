@@ -306,7 +306,8 @@ public class lendbookUI extends JFrame {
 			            String selectResubmitDateString = ((JTextField)dateChooser_Resubmit.getDateEditor().getUiComponent()).getText(); 
 			            bookID = textFieldBookID.getText();
 			            memberID = textFieldMemberID.getText();
-			            boolean status = false;
+			            boolean statusBook = false;
+			            boolean statusmember = false;
 			            
 			            int result = JOptionPane.showConfirmDialog(null,
 			                    "Are your Sure! Do you want to Lend This Book "+bookID+" to This Member "+memberID+" ?",
@@ -314,15 +315,94 @@ public class lendbookUI extends JFrame {
 			                    JOptionPane.YES_NO_OPTION,
 			                    JOptionPane.WARNING_MESSAGE
 			                    );
-			            
+			           
 			            if (result == JOptionPane.YES_OPTION) { //take the confirmation from the user
-			            	status = true;
+			            	
+			            	
+			            	 try {//this check if the book is available or not-------------------------------
+									
+					            	String queryString3 = "SELECT \r\n"
+						            		+ "state \r\n"
+						            		+ "FROM library_system.books\r\n"
+						            		+ "WHERE `book_ID` = '"+bookID+"'\r\n"
+						            		+ "AND state = 'AVAILABLE'\r\n"
+						            		+ ";";
+									
+									//System.out.println(queryString); //use this to check the errors in query
+									//System.out.println("");
+									
+									PreparedStatement pStatement = connection.prepareStatement(queryString3);
+									ResultSet rsResultset = pStatement.executeQuery(); 
+									
+									if (rsResultset.next() == false) {
+								        System.out.println("ResultSet in empty in Java");
+								        JOptionPane.showMessageDialog(null, "Book Is Not Availble !");
+								        statusBook = false;
+								        
+								      } else {
+								    	  statusBook = true;
+								      }
+
+									pStatement.close();
+									rsResultset.close();
+					            	
+					            	
+								} catch (Exception e2) {
+									// TODO: handle exception
+									System.out.println(e2);
+								}
+					            
+					            //-------------------------------------------------------------
+					            
+					            
+					            try {//this check if the book is available or not-------------------------------
+									
+					            	String queryString4 = "SELECT \r\n"
+					            			+ "Mem_ID\r\n"
+					            			+ "FROM members\r\n"
+					            			+ "WHERE Mem_ID = '"+memberID+"'  \r\n"
+					            			+ ";";
+									
+									//System.out.println(queryString); //use this to check the errors in query
+									//System.out.println("");
+									
+									PreparedStatement pStatement = connection.prepareStatement(queryString4);
+									ResultSet rsResultset2 = pStatement.executeQuery(); 
+									
+									if (rsResultset2.next() == false) {
+								        System.out.println("ResultSet in empty in Java");
+								        JOptionPane.showMessageDialog(null, "Member Is Not Availble !");
+								        statusmember = false;
+								        
+								      } else {
+								    	  statusmember = true;
+								      }
+
+									pStatement.close();
+									rsResultset2.close();
+					            	
+					            	
+								} catch (Exception e2) {
+									// TODO: handle exception
+									System.out.println(e2);
+								}
+					            
+					            //-------------------------------------------------------------
+			            	
+			            	
 						}else {
 							JOptionPane.showMessageDialog(null, "Okay! data not added to server !" );
+							statusBook = false;
+							statusmember = false;
 						}
 			            
 			            
-			            while (status) {
+
+			           
+			            
+			            
+			            
+			            while (statusBook && statusmember) {
 			            	
 			            	try {
 				            	
@@ -349,11 +429,12 @@ public class lendbookUI extends JFrame {
 								// TODO: handle exception
 								System.out.println(e2);
 								JOptionPane.showMessageDialog(null, "Book ID Is Not Availble !");
-								status = false;
+								statusBook = false;
+								
 							}
 			            	
 			            	
-			            	if (status) {
+			            	if (statusBook && statusmember) {
 								
 			            		try {
 									
@@ -385,11 +466,12 @@ public class lendbookUI extends JFrame {
 									// TODO: handle exception
 									System.out.println(e2);
 									JOptionPane.showMessageDialog(null, "Member ID Is Not Availble !");
-									status = false;
+									statusmember = false;
 								}
 							}
 			            	
-			            	status = false;
+			            	statusBook = false;
+							statusmember = false;
 			            	
 						}
 			            
