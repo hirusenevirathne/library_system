@@ -1,33 +1,36 @@
-package library_system;
+package library_system.UI;
 
 import java.awt.Color;
 import java.awt.EventQueue;
-
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
-import javax.swing.JScrollPane;
-import com.toedter.calendar.JDateChooser;
-import javax.swing.JTable;
 
-public class updateUI extends JFrame {
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+
+import library_system.homeUI;
+import library_system.home_menu;
+import library_system.sqlConnection;
+import library_system.updateUI;
+
+public class updateAuthorUI extends JFrame {
 
 	private JPanel contentPane;
 	Connection connection = null; //create the connection variable
 	private JTextField textField_ID;
 	private JTextField textField_Name;
 	private JTextField textField_Year;
-	private JTextField textField_Details;
 	private JTable table;
+
 	/**
 	 * Launch the application.
 	 */
@@ -35,7 +38,7 @@ public class updateUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					updateUI frame = new updateUI();
+					updateAuthorUI frame = new updateAuthorUI();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -47,7 +50,9 @@ public class updateUI extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public updateUI() {
+	public updateAuthorUI() {
+		
+
 		
 		connection = sqlConnection.dbConnector(); //connect with sql server
 		
@@ -118,7 +123,7 @@ public class updateUI extends JFrame {
 				
 				JPanel panelAuthorSelectSearch = new JPanel();
 				panelAuthorSelectSearch.setLayout(null);
-				panelAuthorSelectSearch.setBackground(SystemColor.controlHighlight);
+				panelAuthorSelectSearch.setBackground(SystemColor.inactiveCaptionBorder);
 				panelAuthorSelectSearch.setBounds(450, 11, 380, 49);
 				panelbackground.add(panelAuthorSelectSearch);
 				
@@ -140,7 +145,7 @@ public class updateUI extends JFrame {
 				
 				JPanel panelLendingSelectSearch = new JPanel();
 				panelLendingSelectSearch.setLayout(null);
-				panelLendingSelectSearch.setBackground(SystemColor.inactiveCaptionBorder);
+				panelLendingSelectSearch.setBackground(SystemColor.controlHighlight);
 				panelLendingSelectSearch.setBounds(36, 11, 380, 49);
 				panelbackground.add(panelLendingSelectSearch);
 				
@@ -162,7 +167,7 @@ public class updateUI extends JFrame {
 				textField_ID.setBounds(168, 43, 246, 27);
 				panelbody.add(textField_ID);
 				
-				JLabel lblbookID = new JLabel("Book ID *   :");
+				JLabel lblbookID = new JLabel("Author ID *   :");
 				lblbookID.setFont(new Font("Trebuchet MS", Font.BOLD, 19));
 				lblbookID.setBounds(32, 43, 126, 27);
 				panelbody.add(lblbookID);
@@ -193,37 +198,25 @@ public class updateUI extends JFrame {
 				textField_Name.setFont(new Font("Trebuchet MS", Font.PLAIN, 19));
 				textField_Name.setColumns(10);
 				textField_Name.setBackground(SystemColor.inactiveCaptionBorder);
-				textField_Name.setBounds(192, 178, 246, 27);
+				textField_Name.setBounds(238, 178, 246, 27);
 				panelbody.add(textField_Name);
 				
-				JLabel lblBookName = new JLabel("Book Name     :");
+				JLabel lblBookName = new JLabel("Author First Name   :");
 				lblBookName.setFont(new Font("Trebuchet MS", Font.BOLD, 19));
-				lblBookName.setBounds(32, 178, 150, 27);
+				lblBookName.setBounds(32, 178, 207, 27);
 				panelbody.add(lblBookName);
 				
 				textField_Year = new JTextField();
 				textField_Year.setFont(new Font("Trebuchet MS", Font.PLAIN, 19));
 				textField_Year.setColumns(10);
 				textField_Year.setBackground(SystemColor.inactiveCaptionBorder);
-				textField_Year.setBounds(192, 228, 246, 27);
+				textField_Year.setBounds(238, 228, 246, 27);
 				panelbody.add(textField_Year);
 				
-				JLabel lblPublishYear = new JLabel("Publish Year   :");
+				JLabel lblPublishYear = new JLabel("Author Last Name   :");
 				lblPublishYear.setFont(new Font("Trebuchet MS", Font.BOLD, 19));
-				lblPublishYear.setBounds(32, 228, 150, 27);
+				lblPublishYear.setBounds(32, 228, 196, 27);
 				panelbody.add(lblPublishYear);
-				
-				JLabel lblOtherDetails = new JLabel("Other Details  :");
-				lblOtherDetails.setFont(new Font("Trebuchet MS", Font.BOLD, 19));
-				lblOtherDetails.setBounds(32, 282, 150, 27);
-				panelbody.add(lblOtherDetails);
-				
-				textField_Details = new JTextField();
-				textField_Details.setFont(new Font("Trebuchet MS", Font.PLAIN, 19));
-				textField_Details.setColumns(10);
-				textField_Details.setBackground(SystemColor.inactiveCaptionBorder);
-				textField_Details.setBounds(192, 282, 951, 55);
-				panelbody.add(textField_Details);
 				
 				JScrollPane scrollPane = new JScrollPane();
 				scrollPane.setBounds(10, 374, 1241, 120);
