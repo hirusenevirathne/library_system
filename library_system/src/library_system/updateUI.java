@@ -8,15 +8,26 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 import com.toedter.calendar.JDateChooser;
+
+import library_system.UI.updateAuthorUI;
+import library_system.UI.updateMemberUI;
+import net.proteanit.sql.DbUtils;
+
 import javax.swing.JTable;
 
 public class updateUI extends JFrame {
@@ -28,6 +39,11 @@ public class updateUI extends JFrame {
 	private JTextField textField_Year;
 	private JTextField textField_Details;
 	private JTable table;
+	private String bookID = "";
+	private String bName = "";
+	private String bYear = "";
+	private String bDetails = "";
+	
 	/**
 	 * Launch the application.
 	 */
@@ -42,6 +58,220 @@ public class updateUI extends JFrame {
 				}
 			}
 		});
+	}
+	
+	public void showBookTable() {// Show the data about typed book id before delete it
+		
+		bookID = textField_ID.getText();
+		
+		try { 
+			
+			
+			
+			String queryString = "SELECT \r\n"
+					+ "book_ID AS \"Book ID\",\r\n"
+					+ "B_name AS \"Book Name\",\r\n"
+					+ "publish_year AS \"Published Year\",\r\n"
+					+ "A.author_id AS \"Author ID\",\r\n"
+					+ "A_F_name AS \"Author First Name\",\r\n"
+					+ "A_L_name AS \"Author Last Name\",\r\n"
+					+ "Other_details AS \"Other Details\",\r\n"
+					+ "state AS \"Book States\"\r\n"
+					+ "FROM books B\r\n"
+					+ "JOIN author A\r\n"
+					+ "	ON B.Author_ID = A.Author_id\r\n"
+					+ "WHERE book_ID LIKE "+bookID+" \r\n"
+					+ "ORDER BY B_name;";
+			//System.out.println(queryString); //use this to check the errors in query
+			//System.out.println("");System.out.println("");
+			
+			PreparedStatement pStatement = connection.prepareStatement(queryString);
+			ResultSet rsResultset = pStatement.executeQuery(); 
+			table.setModel(DbUtils.resultSetToTableModel(rsResultset));
+			
+			
+			pStatement.close();
+			rsResultset.close();
+			
+		} catch (Exception e2) {
+			// TODO: handle exception
+			System.out.println(e2);
+		}
+	}
+	
+	
+	public Boolean bookValidationBoolean() {//this check if the book is available or not--------------(Validation Part)
+		
+		boolean statusBook = false;
+		bookID = textField_ID.getText();
+		
+		try {
+			
+        	String queryString3 = "SELECT \r\n"
+        			+ "book_ID \r\n"
+        			+ "FROM library_system.books\r\n"
+        			+ "WHERE `book_ID` = '"+bookID+"'\r\n"
+        			+ ";\r\n"
+        			+ "";
+			
+			//System.out.println(queryString); //use this to check the errors in query
+			//System.out.println("");System.out.println("");
+			
+			PreparedStatement pStatement = connection.prepareStatement(queryString3);
+			ResultSet rsResultset = pStatement.executeQuery(); 
+			
+			if (rsResultset.next() == false) {
+		        System.out.println("ResultSet in empty in Java");
+		        JOptionPane.showMessageDialog(null, "Book Is Not Availble !");
+		        statusBook = false;
+		        
+		      } else {
+		    	  statusBook = true;
+		      }
+
+			pStatement.close();
+			rsResultset.close();
+        	
+        	
+		} catch (Exception e2) {
+			// TODO: handle exception
+			System.out.println(e2);
+		}
+		
+		return statusBook;
+        
+	}//---------------------------------------------------------------------------END of Book validation part
+	
+	
+	public void updateData(String sqlQuary) {//-------------method for run SQL quarry
+		
+		bookID = textField_ID.getText();
+		
+		try {
+			
+			PreparedStatement pStatement2 = connection.prepareStatement(sqlQuary);
+			pStatement2.executeUpdate(sqlQuary);
+			//JOptionPane.showMessageDialog(null, "Book Lending data Saved Successfully.");
+			
+			pStatement2.close();
+			JOptionPane.showMessageDialog(null, "Okay! Book ID : "+bookID+" data Updated From server !" );
+            
+		} catch (Exception e2) {
+			// TODO: handle exception
+			System.out.println(e2);
+			JOptionPane.showMessageDialog(null, "Book ID Is Not Availble !");
+			
+			
+		}
+		
+	}//------------------------------------------------------ END of SQL quarry run Method
+
+	
+	
+	public String sqlQuaryString() { //find the correct sql Query
+		
+		boolean nameAvailabe = textField_Name.getText().length()!=0 ;
+		boolean yearAvailabe = textField_Year.getText().length()!=0 ;
+		boolean detailsAvailabe = textField_Details.getText().length()!=0 ;
+		
+		
+		bookID = textField_ID.getText();
+		String sqlQuery ="";
+		
+		if (nameAvailabe && yearAvailabe && detailsAvailabe) {
+			
+			bName = textField_Name.getText();
+			bYear = textField_Year.getText();
+			bDetails = textField_Details.getText();
+			
+			sqlQuery = "UPDATE `library_system`.`books` \r\n"
+					+ "SET \r\n"
+					+ "`B_name` = '"+bName+"', \r\n"
+					+ "`publish_year` = '"+bYear+"', \r\n"
+					+ "`Other_details` = '"+bDetails+"' \r\n"
+					+ "WHERE (\r\n"
+					+ "`book_ID` = '"+bookID+"'\r\n"
+					+ ");\r\n"
+					+ "";
+			return sqlQuery;
+			
+			
+		}else if (nameAvailabe && yearAvailabe ) {
+			bName = textField_Name.getText();
+			bYear = textField_Year.getText();
+			
+			sqlQuery = "UPDATE `library_system`.`books` \r\n"
+					+ "SET \r\n"
+					+ "`B_name` = '"+bName+"', \r\n"
+					+ "`publish_year` = '"+bYear+"' \r\n"
+					+ "WHERE (\r\n"
+					+ "`book_ID` = '"+bookID+"'\r\n"
+					+ ");";
+			return sqlQuery;
+			
+		}else if (nameAvailabe && detailsAvailabe) {
+			bName = textField_Name.getText();
+			bDetails = textField_Details.getText();
+			
+			sqlQuery = "UPDATE `library_system`.`books` \r\n"
+					+ "SET \r\n"
+					+ "`B_name` = '"+bName+"', \r\n"
+					+ "`Other_details` = '"+bDetails+"' \r\n"
+					+ "WHERE (\r\n"
+					+ "`book_ID` = '"+bookID+"'\r\n"
+					+ ");";
+			return sqlQuery;
+			
+		}else if (yearAvailabe && detailsAvailabe) {
+			bYear = textField_Year.getText();
+			bDetails = textField_Details.getText();
+			
+			sqlQuery = "UPDATE `library_system`.`books` \r\n"
+					+ "SET \r\n"
+					+ "`publish_year` = '"+bYear+"', \r\n"
+					+ "`Other_details` = '"+bDetails+"' \r\n"
+					+ "WHERE (\r\n"
+					+ "`book_ID` = '"+bookID+"'\r\n"
+					+ ");";
+			return sqlQuery;
+			
+		}else if (nameAvailabe) {
+			bName = textField_Name.getText();
+			
+			sqlQuery = "UPDATE `library_system`.`books` \r\n"
+					+ "SET `B_name` = '"+bName+"' \r\n"
+					+ "WHERE (\r\n"
+					+ "`book_ID` = '"+bookID+"'\r\n"
+					+ ");";
+			return sqlQuery;
+			
+		}else if (yearAvailabe) {
+			bYear = textField_Year.getText();
+			
+			sqlQuery = "UPDATE `library_system`.`books` \r\n"
+					+ "SET `publish_year` = '"+bYear+"' \r\n"
+					+ "WHERE (\r\n"
+					+ "`book_ID` = '"+bookID+"'\r\n"
+					+ ");";
+			return sqlQuery;
+			
+			
+		}else if (detailsAvailabe) {
+			bDetails = textField_Details.getText();
+			
+			sqlQuery = "UPDATE `library_system`.`books` \r\n"
+					+ "SET `Other_details` = '"+bDetails+"' \r\n"
+					+ "WHERE (\r\n"
+					+ "`book_ID` = '"+bookID+"'\r\n"
+					+ ");";
+			return sqlQuery;
+			
+			
+		}else {
+			return sqlQuery;
+		}
+		
+		
 	}
 
 	/**
@@ -116,38 +346,76 @@ public class updateUI extends JFrame {
 				panelbackground.setBounds(0, 133, 1281, 60);
 				backgroundpanel.add(panelbackground);
 				
-				JPanel panelAuthorSelectSearch = new JPanel();
-				panelAuthorSelectSearch.setLayout(null);
-				panelAuthorSelectSearch.setBackground(SystemColor.controlHighlight);
-				panelAuthorSelectSearch.setBounds(450, 11, 380, 49);
-				panelbackground.add(panelAuthorSelectSearch);
+				JPanel panelAuthorSelectUpdate = new JPanel();
+				panelAuthorSelectUpdate.addMouseListener(new MouseAdapter() {//Author Tab Selection--------------------------
+					@Override
+					public void mouseEntered(MouseEvent e) {
+						panelAuthorSelectUpdate.setBackground(new java.awt.Color(115, 163, 239));
+					}
+					@Override
+					public void mouseExited(MouseEvent e) {
+						panelAuthorSelectUpdate.setBackground(SystemColor.controlHighlight);
+					}
+					@SuppressWarnings("deprecation")
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						
+						new updateAuthorUI().show();
+						dispose();
+					}
+				});
+				
+				
+				
+				
+				panelAuthorSelectUpdate.setLayout(null);
+				panelAuthorSelectUpdate.setBackground(SystemColor.controlHighlight);
+				panelAuthorSelectUpdate.setBounds(450, 11, 380, 49);
+				panelbackground.add(panelAuthorSelectUpdate);
 				
 				JLabel lblAuthors = new JLabel("Authors");
 				lblAuthors.setFont(new Font("Trebuchet MS", Font.BOLD, 22));
 				lblAuthors.setBounds(161, 11, 87, 27);
-				panelAuthorSelectSearch.add(lblAuthors);
+				panelAuthorSelectUpdate.add(lblAuthors);
 				
-				JPanel panelMembersSelectSearch = new JPanel();
-				panelMembersSelectSearch.setLayout(null);
-				panelMembersSelectSearch.setBackground(SystemColor.controlHighlight);
-				panelMembersSelectSearch.setBounds(867, 11, 380, 49);
-				panelbackground.add(panelMembersSelectSearch);
+				JPanel panelMembersSelectUpdate = new JPanel();
+				panelMembersSelectUpdate.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseEntered(MouseEvent e) {
+						panelMembersSelectUpdate.setBackground(new java.awt.Color(115, 163, 239));
+					}
+					@Override
+					public void mouseExited(MouseEvent e) {
+						panelMembersSelectUpdate.setBackground(SystemColor.controlHighlight);
+					}
+					@SuppressWarnings("deprecation")
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						
+						new updateMemberUI().show();
+						dispose();
+					}
+				});
+				panelMembersSelectUpdate.setLayout(null);
+				panelMembersSelectUpdate.setBackground(SystemColor.controlHighlight);
+				panelMembersSelectUpdate.setBounds(867, 11, 380, 49);
+				panelbackground.add(panelMembersSelectUpdate);
 				
 				JLabel lblMembers = new JLabel("Members");
 				lblMembers.setFont(new Font("Trebuchet MS", Font.BOLD, 22));
 				lblMembers.setBounds(152, 11, 92, 27);
-				panelMembersSelectSearch.add(lblMembers);
+				panelMembersSelectUpdate.add(lblMembers);
 				
-				JPanel panelLendingSelectSearch = new JPanel();
-				panelLendingSelectSearch.setLayout(null);
-				panelLendingSelectSearch.setBackground(SystemColor.inactiveCaptionBorder);
-				panelLendingSelectSearch.setBounds(36, 11, 380, 49);
-				panelbackground.add(panelLendingSelectSearch);
+				JPanel panelBooksSelectUpdate = new JPanel();
+				panelBooksSelectUpdate.setLayout(null);
+				panelBooksSelectUpdate.setBackground(SystemColor.inactiveCaptionBorder);
+				panelBooksSelectUpdate.setBounds(36, 11, 380, 49);
+				panelbackground.add(panelBooksSelectUpdate);
 				
 				JLabel lblBooks = new JLabel("Books");
 				lblBooks.setFont(new Font("Trebuchet MS", Font.BOLD, 22));
 				lblBooks.setBounds(145, 11, 63, 27);
-				panelLendingSelectSearch.add(lblBooks);
+				panelBooksSelectUpdate.add(lblBooks);
 				
 				JPanel panelbody = new JPanel();
 				panelbody.setLayout(null);
@@ -168,6 +436,27 @@ public class updateUI extends JFrame {
 				panelbody.add(lblbookID);
 				
 				JPanel panelSearch = new JPanel();
+				panelSearch.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseEntered(MouseEvent e) {
+						panelSearch.setBackground(new java.awt.Color(115, 163, 239));
+					}
+					@Override
+					public void mouseExited(MouseEvent e) {
+						panelSearch.setBackground(SystemColor.controlHighlight);
+					}
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						
+						if (bookValidationBoolean()) {
+							
+							showBookTable();
+							
+						}
+						
+						
+					}
+				});
 				panelSearch.setLayout(null);
 				panelSearch.setBackground(SystemColor.menu);
 				panelSearch.setBounds(540, 43, 252, 55);
@@ -179,6 +468,43 @@ public class updateUI extends JFrame {
 				panelSearch.add(lblSearch);
 				
 				JPanel panelUpdate = new JPanel();
+				panelUpdate.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseEntered(MouseEvent e) {
+						panelUpdate.setBackground(SystemColor.info);
+					}
+					@Override
+					public void mouseExited(MouseEvent e) {
+						panelUpdate.setBackground(UIManager.getColor("CheckBox.background"));
+					}
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						
+						bookID = textField_ID.getText();
+						
+						if (bookValidationBoolean()) {
+							
+							int result = JOptionPane.showConfirmDialog(null,
+				                    "Are your Sure! Do you want to Update This Book ID : "+bookID+"  ?",
+				                    "Confromation Message !",
+				                    JOptionPane.YES_NO_OPTION,
+				                    JOptionPane.WARNING_MESSAGE
+				                    );
+							
+							if (result == JOptionPane.YES_OPTION) {//take the confirmation from the user
+								
+								//System.out.println(sqlQuaryString());
+								
+								updateData(sqlQuaryString());
+								
+							}else {
+								JOptionPane.showMessageDialog(null, "Okay Data not Updated !");
+							}
+							
+						}
+						
+					}
+				});
 				panelUpdate.setLayout(null);
 				panelUpdate.setBackground(SystemColor.controlHighlight);
 				panelUpdate.setBounds(891, 43, 252, 55);

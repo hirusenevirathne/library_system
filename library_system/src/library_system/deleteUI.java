@@ -139,7 +139,7 @@ public class deleteUI extends JFrame {
 	public Boolean memberValidationBoolean() {//this check if the Member is available or not--------------(Validation Part)
 		
 		boolean statusMember = false;
-		bookID = textFieldBookID.getText();
+		memberID = textFieldMemID.getText();
 		
 		try {
 			
@@ -584,6 +584,8 @@ public class deleteUI extends JFrame {
 								JOptionPane.showMessageDialog(null, "Somthing went Wrong Try Again Later");
 							}
 							
+						}else {
+							JOptionPane.showMessageDialog(null, "Okay Data not deleted ");
 						}
 						
 						

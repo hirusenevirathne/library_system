@@ -7,14 +7,18 @@ import java.awt.SystemColor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import library_system.homeUI;
@@ -31,6 +35,7 @@ public class updateMemberUI extends JFrame {
 	private JTextField textField_Lname;
 	private JTable table;
 	private JTextField textField_no;
+	private String memberID = "";
 
 	/**
 	 * Launch the application.
@@ -47,6 +52,54 @@ public class updateMemberUI extends JFrame {
 			}
 		});
 	}
+	
+	
+	
+	public Boolean memberValidationBoolean() {//this check if the Member is available or not--------------(Validation Part)
+		
+		boolean statusMember = false;
+		memberID = textField_ID.getText();
+		
+		try {
+			
+        	String queryString4 = "SELECT \r\n"
+        			+ "Mem_ID\r\n"
+        			+ "FROM members\r\n"
+        			+ "WHERE Mem_ID = '"+memberID+"'  \r\n"
+        			+ ";";
+			
+			//System.out.println(queryString); //use this to check the errors in query
+			//System.out.println("");System.out.println("");
+			
+			PreparedStatement pStatement = connection.prepareStatement(queryString4);
+			ResultSet rsResultset = pStatement.executeQuery(); 
+			
+			if (rsResultset.next() == false) {
+		        System.out.println("ResultSet in empty in Java");
+		        JOptionPane.showMessageDialog(null, "Member Is Not Availble !");
+		        statusMember = false;
+		        
+		      } else {
+		    	  statusMember = true;
+		      }
+
+			pStatement.close();
+			rsResultset.close();
+        	
+        	
+		} catch (Exception e2) {
+			// TODO: handle exception
+			System.out.println(e2);
+		}
+		
+		return statusMember;
+        
+	}//---------------------------------------------------------------------------END of Member validation part
+	
+	
+	
+	
+	
 
 	/**
 	 * Create the frame.
@@ -123,38 +176,72 @@ public class updateMemberUI extends JFrame {
 				panelbackground.setBounds(0, 133, 1281, 60);
 				backgroundpanel.add(panelbackground);
 				
-				JPanel panelAuthorSelectSearch = new JPanel();
-				panelAuthorSelectSearch.setLayout(null);
-				panelAuthorSelectSearch.setBackground(SystemColor.controlHighlight);
-				panelAuthorSelectSearch.setBounds(450, 11, 380, 49);
-				panelbackground.add(panelAuthorSelectSearch);
+				JPanel panelAuthorSelectUpdate = new JPanel();
+				panelAuthorSelectUpdate.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseEntered(MouseEvent e) {
+						panelAuthorSelectUpdate.setBackground(new java.awt.Color(115, 163, 239));
+					}
+					@Override
+					public void mouseExited(MouseEvent e) {
+						panelAuthorSelectUpdate.setBackground(SystemColor.controlHighlight);
+					}
+					@SuppressWarnings("deprecation")
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						
+						new updateAuthorUI().show();
+						dispose();
+					}
+				});
+				panelAuthorSelectUpdate.setLayout(null);
+				panelAuthorSelectUpdate.setBackground(SystemColor.controlHighlight);
+				panelAuthorSelectUpdate.setBounds(450, 11, 380, 49);
+				panelbackground.add(panelAuthorSelectUpdate);
 				
 				JLabel lblAuthors = new JLabel("Authors");
 				lblAuthors.setFont(new Font("Trebuchet MS", Font.BOLD, 22));
 				lblAuthors.setBounds(161, 11, 87, 27);
-				panelAuthorSelectSearch.add(lblAuthors);
+				panelAuthorSelectUpdate.add(lblAuthors);
 				
-				JPanel panelMembersSelectSearch = new JPanel();
-				panelMembersSelectSearch.setLayout(null);
-				panelMembersSelectSearch.setBackground(SystemColor.inactiveCaptionBorder);
-				panelMembersSelectSearch.setBounds(867, 11, 380, 49);
-				panelbackground.add(panelMembersSelectSearch);
+				JPanel panelMembersSelectUpdate = new JPanel();
+				panelMembersSelectUpdate.setLayout(null);
+				panelMembersSelectUpdate.setBackground(SystemColor.inactiveCaptionBorder);
+				panelMembersSelectUpdate.setBounds(867, 11, 380, 49);
+				panelbackground.add(panelMembersSelectUpdate);
 				
 				JLabel lblMembers = new JLabel("Members");
 				lblMembers.setFont(new Font("Trebuchet MS", Font.BOLD, 22));
 				lblMembers.setBounds(152, 11, 92, 27);
-				panelMembersSelectSearch.add(lblMembers);
+				panelMembersSelectUpdate.add(lblMembers);
 				
-				JPanel panelLendingSelectSearch = new JPanel();
-				panelLendingSelectSearch.setLayout(null);
-				panelLendingSelectSearch.setBackground(SystemColor.controlHighlight);
-				panelLendingSelectSearch.setBounds(36, 11, 380, 49);
-				panelbackground.add(panelLendingSelectSearch);
+				JPanel panelBooksSelectUpdate = new JPanel();
+				panelBooksSelectUpdate.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseEntered(MouseEvent e) {
+						panelBooksSelectUpdate.setBackground(new java.awt.Color(115, 163, 239));
+					}
+					@Override
+					public void mouseExited(MouseEvent e) {
+						panelBooksSelectUpdate.setBackground(SystemColor.controlHighlight);
+					}
+					@SuppressWarnings("deprecation")
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						
+						new updateUI().show();
+						dispose();
+					}
+				});
+				panelBooksSelectUpdate.setLayout(null);
+				panelBooksSelectUpdate.setBackground(SystemColor.controlHighlight);
+				panelBooksSelectUpdate.setBounds(36, 11, 380, 49);
+				panelbackground.add(panelBooksSelectUpdate);
 				
 				JLabel lblBooks = new JLabel("Books");
 				lblBooks.setFont(new Font("Trebuchet MS", Font.BOLD, 22));
 				lblBooks.setBounds(145, 11, 63, 27);
-				panelLendingSelectSearch.add(lblBooks);
+				panelBooksSelectUpdate.add(lblBooks);
 				
 				JPanel panelbody = new JPanel();
 				panelbody.setLayout(null);
@@ -175,6 +262,16 @@ public class updateMemberUI extends JFrame {
 				panelbody.add(lblbookID);
 				
 				JPanel panelSearch = new JPanel();
+				panelSearch.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseEntered(MouseEvent e) {
+						panelSearch.setBackground(new java.awt.Color(115, 163, 239));
+					}
+					@Override
+					public void mouseExited(MouseEvent e) {
+						panelSearch.setBackground(SystemColor.controlHighlight);
+					}
+				});
 				panelSearch.setLayout(null);
 				panelSearch.setBackground(SystemColor.menu);
 				panelSearch.setBounds(540, 43, 252, 55);
@@ -186,6 +283,16 @@ public class updateMemberUI extends JFrame {
 				panelSearch.add(lblSearch);
 				
 				JPanel panelUpdate = new JPanel();
+				panelUpdate.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseEntered(MouseEvent e) {
+						panelUpdate.setBackground(SystemColor.info);
+					}
+					@Override
+					public void mouseExited(MouseEvent e) {
+						panelUpdate.setBackground(UIManager.getColor("CheckBox.background"));
+					}
+				});
 				panelUpdate.setLayout(null);
 				panelUpdate.setBackground(SystemColor.controlHighlight);
 				panelUpdate.setBounds(891, 43, 252, 55);
