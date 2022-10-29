@@ -101,7 +101,7 @@ public class updateMemberUI extends JFrame {
 	}//---------------------------------------------------------------------------END of Member validation part
 	
 	
-public void updateData(String sqlQuary) {//-------------method for run SQL quarry
+	public void updateData(String sqlQuary) {//-------------method for run SQL quarry
 		
 		memberID = textField_ID.getText();
 		
@@ -129,7 +129,7 @@ public void updateData(String sqlQuary) {//-------------method for run SQL quarr
 	
 	
 	
-public void showBookTable() {// Show the data about typed book id before delete it
+	public void showBookTable() {// Show the data about typed book id before delete it
 		
 		memberID = textField_ID.getText();
 		
@@ -170,7 +170,7 @@ public void showBookTable() {// Show the data about typed book id before delete 
 
 
 
-public String sqlQuaryString() { //find the correct sql Query
+	public String sqlQuaryString() { //find the correct sql Query
 	
 	boolean fNameAvailabe = textField_Fname.getText().length()!=0 ;
 	boolean lNameAvailabe = textField_Lname.getText().length()!=0 ;

@@ -25,6 +25,7 @@ import library_system.homeUI;
 import library_system.home_menu;
 import library_system.sqlConnection;
 import library_system.updateUI;
+import net.proteanit.sql.DbUtils;
 
 public class updateAuthorUI extends JFrame {
 
@@ -35,6 +36,8 @@ public class updateAuthorUI extends JFrame {
 	private JTextField textField_Lname;
 	private JTable table;
 	private String authorID = "";
+	private String fName = "";
+	private String lName = "";
 
 	/**
 	 * Launch the application.
@@ -54,7 +57,7 @@ public class updateAuthorUI extends JFrame {
 	
 	
 	
-	public Boolean memberValidationBoolean() {//this check if the Author is available or not--------------(Validation Part)
+	public Boolean authorValidationBoolean() {//this check if the Author is available or not--------------(Validation Part)
 		
 		boolean statusMember = false;
 		authorID = textField_ID.getText();
@@ -94,6 +97,124 @@ public class updateAuthorUI extends JFrame {
 		return statusMember;
         
 	}//---------------------------------------------------------------------------END of Author validation part
+	
+	
+	
+	
+	public void updateData(String sqlQuary) {//-------------method for run SQL quarry
+		
+		authorID = textField_ID.getText();
+		
+		try {
+			
+			PreparedStatement pStatement2 = connection.prepareStatement(sqlQuary);
+			pStatement2.executeUpdate(sqlQuary);
+			//JOptionPane.showMessageDialog(null, "Book Lending data Saved Successfully.");
+			
+			pStatement2.close();
+			JOptionPane.showMessageDialog(null, "Okay! Author ID : "+authorID+" data Updated From server !" );
+            
+		} catch (Exception e2) {
+			// TODO: handle exception
+			System.out.println(e2);
+			JOptionPane.showMessageDialog(null, "Author ID Is Not Availble !");
+			
+			
+		}
+		
+	}//------------------------------------------------------ END of SQL quarry run Method
+
+
+
+	public void showBookTable() {// Show the data about typed book id before delete it
+		
+		authorID = textField_ID.getText();
+		
+		try { 
+			
+			
+			
+			String queryString = "SELECT \r\n"
+					+ "Author_ID AS \"Author ID\",\r\n"
+					+ "A_F_name AS \"First Name\",\r\n"
+					+ "A_L_name AS \"Last Name\"\r\n"
+					+ "FROM \r\n"
+					+ "library_system.author\r\n"
+					+ "WHERE Author_id LIKE "+authorID+"\r\n"
+					+ "ORDER BY Author_id\r\n"
+					+ ";";
+			//System.out.println(queryString); //use this to check the errors in query
+			//System.out.println("");System.out.println("");
+			
+			PreparedStatement pStatement = connection.prepareStatement(queryString);
+			ResultSet rsResultset = pStatement.executeQuery(); 
+			table.setModel(DbUtils.resultSetToTableModel(rsResultset));
+			
+			
+			pStatement.close();
+			rsResultset.close();
+			
+		} catch (Exception e2) {
+			// TODO: handle exception
+			System.out.println(e2);
+		}
+	}
+	
+
+	public String sqlQuaryString() { //find the correct sql Query
+		
+		boolean fNameAvailabe = textField_Fname.getText().length()!=0 ;
+		boolean lNameAvailabe = textField_Lname.getText().length()!=0 ;
+				
+		
+		authorID = textField_ID.getText();
+		String sqlQuery ="";
+		
+		if (fNameAvailabe && lNameAvailabe ) {
+			
+			fName = textField_Fname.getText();
+			lName = textField_Lname.getText();
+						
+			sqlQuery = "UPDATE `library_system`.`author` \r\n"
+					+ "SET \r\n"
+					+ "`A_F_name` = '"+fName+"', \r\n"
+					+ "`A_L_name` = '"+lName+"' \r\n"
+					+ "WHERE (\r\n"
+					+ "`Author_id` = '"+authorID+"'\r\n"
+					+ ");";
+			return sqlQuery;
+			
+			
+		}else if (fNameAvailabe) {
+			fName = textField_Fname.getText();
+			
+			sqlQuery = "UPDATE `library_system`.`author` \r\n"
+					+ "SET \r\n"
+					+ "`A_F_name` = '"+fName+"' \r\n"
+					+ "WHERE (\r\n"
+					+ "`Author_id` = '"+authorID+"'\r\n"
+					+ ");";
+			return sqlQuery;
+			
+		}else if (lNameAvailabe) {
+			lName = textField_Lname.getText();
+			
+			sqlQuery = "UPDATE `library_system`.`author` \r\n"
+					+ "SET \r\n"
+					+ "`A_L_name` = '"+lName+"' \r\n"
+					+ "WHERE (\r\n"
+					+ "`Author_id` = '"+authorID+"'\r\n"
+					+ ");";
+			return sqlQuery;
+			
+			
+		}else {
+			return sqlQuery;
+		}
+		
+		
+	}
+
 	
 
 	/**
@@ -265,6 +386,16 @@ public class updateAuthorUI extends JFrame {
 					public void mouseExited(MouseEvent e) {
 						panelSearch.setBackground(SystemColor.controlHighlight);
 					}
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						
+						if (authorValidationBoolean()) {
+							
+							showBookTable();
+							
+						}
+						
+					}
 				});
 				panelSearch.setLayout(null);
 				panelSearch.setBackground(SystemColor.menu);
@@ -285,6 +416,34 @@ public class updateAuthorUI extends JFrame {
 					@Override
 					public void mouseExited(MouseEvent e) {
 						panelUpdate.setBackground(UIManager.getColor("CheckBox.background"));
+					}
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						
+						authorID = textField_ID.getText();
+						
+						if (authorValidationBoolean()) {
+							
+							int result = JOptionPane.showConfirmDialog(null,
+				                    "Are your Sure! Do you want to Update This Author ID : "+authorID+"  ?",
+				                    "Confromation Message !",
+				                    JOptionPane.YES_NO_OPTION,
+				                    JOptionPane.WARNING_MESSAGE
+				                    );
+							
+							if (result == JOptionPane.YES_OPTION) {//take the confirmation from the user
+								
+								//System.out.println(sqlQuaryString());
+								
+								updateData(sqlQuaryString());
+								
+							}else {
+								JOptionPane.showMessageDialog(null, "Okay Data not Updated !");
+							}
+							
+						}
+						showBookTable();
+						
 					}
 				});
 				panelUpdate.setLayout(null);
