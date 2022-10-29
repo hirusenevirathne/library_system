@@ -502,7 +502,7 @@ public class updateUI extends JFrame {
 							}
 							
 						}
-						
+						showBookTable();
 					}
 				});
 				panelUpdate.setLayout(null);

@@ -25,6 +25,7 @@ import library_system.homeUI;
 import library_system.home_menu;
 import library_system.sqlConnection;
 import library_system.updateUI;
+import net.proteanit.sql.DbUtils;
 
 public class updateMemberUI extends JFrame {
 
@@ -36,6 +37,9 @@ public class updateMemberUI extends JFrame {
 	private JTable table;
 	private JTextField textField_no;
 	private String memberID = "";
+	private String fName = "";
+	private String lName = "";
+	private String conNo = "";
 
 	/**
 	 * Launch the application.
@@ -97,7 +101,183 @@ public class updateMemberUI extends JFrame {
 	}//---------------------------------------------------------------------------END of Member validation part
 	
 	
+public void updateData(String sqlQuary) {//-------------method for run SQL quarry
+		
+		memberID = textField_ID.getText();
+		
+		try {
+			
+			PreparedStatement pStatement2 = connection.prepareStatement(sqlQuary);
+			pStatement2.executeUpdate(sqlQuary);
+			//JOptionPane.showMessageDialog(null, "Book Lending data Saved Successfully.");
+			
+			pStatement2.close();
+			JOptionPane.showMessageDialog(null, "Okay! Book ID : "+memberID+" data Updated From server !" );
+            
+		} catch (Exception e2) {
+			// TODO: handle exception
+			System.out.println(e2);
+			JOptionPane.showMessageDialog(null, "Book ID Is Not Availble !");
+			
+			
+		}
+		
+	}//------------------------------------------------------ END of SQL quarry run Method
+
+
+
 	
+	
+	
+public void showBookTable() {// Show the data about typed book id before delete it
+		
+		memberID = textField_ID.getText();
+		
+		try { 
+			
+			
+			
+			String queryString = "SELECT \r\n"
+					+ "Mem_ID AS \"Member ID\",\r\n"
+					+ "F_name AS \"First Name\",\r\n"
+					+ "L_name AS \"Last Name\",\r\n"
+					+ "Contact_no AS \"Contact Number\" \r\n"
+					+ "FROM \r\n"
+					+ "library_system.members\r\n"
+					+ "WHERE (\r\n"
+					+ "`Mem_ID` = '"+memberID+"'\r\n"
+					+ ");";
+			//System.out.println(queryString); //use this to check the errors in query
+			//System.out.println("");System.out.println("");
+			
+			PreparedStatement pStatement = connection.prepareStatement(queryString);
+			ResultSet rsResultset = pStatement.executeQuery(); 
+			table.setModel(DbUtils.resultSetToTableModel(rsResultset));
+			
+			
+			pStatement.close();
+			rsResultset.close();
+			
+		} catch (Exception e2) {
+			// TODO: handle exception
+			System.out.println(e2);
+		}
+	}
+	
+	
+	
+
+
+
+
+public String sqlQuaryString() { //find the correct sql Query
+	
+	boolean fNameAvailabe = textField_Fname.getText().length()!=0 ;
+	boolean lNameAvailabe = textField_Lname.getText().length()!=0 ;
+	boolean contactNoAvailabe = textField_no.getText().length()!=0 ;
+	
+	
+	memberID = textField_ID.getText();
+	String sqlQuery ="";
+	
+	if (fNameAvailabe && lNameAvailabe && contactNoAvailabe) {
+		
+		fName = textField_Fname.getText();
+		lName = textField_Lname.getText();
+		conNo = textField_no.getText();
+		
+		sqlQuery = "UPDATE `library_system`.`members` \r\n"
+				+ "SET \r\n"
+				+ "`F_name` = '"+fName+"', \r\n"
+				+ "`L_name` = '"+lName+"', \r\n"
+				+ "`Contact_no` = '"+conNo+"' \r\n"
+				+ "WHERE (\r\n"
+				+ "`Mem_ID` = '"+memberID+"'\r\n"
+				+ ");";
+		return sqlQuery;
+		
+		
+	}else if (fNameAvailabe && lNameAvailabe ) {
+		fName = textField_Fname.getText();
+		lName = textField_Lname.getText();
+		
+		sqlQuery = "UPDATE `library_system`.`members` \r\n"
+				+ "SET \r\n"
+				+ "`F_name` = '"+fName+"', \r\n"
+				+ "`L_name` = '"+lName+"' \r\n"
+				+ "WHERE (\r\n"
+				+ "`Mem_ID` = '"+memberID+"'\r\n"
+				+ ");";
+		return sqlQuery;
+		
+	}else if (fNameAvailabe && contactNoAvailabe) {
+		fName = textField_Fname.getText();
+		conNo = textField_no.getText();
+		
+		sqlQuery = "UPDATE `library_system`.`members` \r\n"
+				+ "SET \r\n"
+				+ "`F_name` = '"+fName+"', \r\n"
+				+ "`Contact_no` = '"+conNo+"' \r\n"
+				+ "WHERE (\r\n"
+				+ "`Mem_ID` = '"+memberID+"'\r\n"
+				+ ");";
+		return sqlQuery;
+		
+	}else if (lNameAvailabe && contactNoAvailabe) {
+		lName = textField_Lname.getText();
+		conNo = textField_no.getText();
+		
+		sqlQuery = "UPDATE `library_system`.`members` \r\n"
+				+ "SET \r\n"
+				+ "`L_name` = '"+lName+"', \r\n"
+				+ "`Contact_no` = '"+conNo+"' \r\n"
+				+ "WHERE (\r\n"
+				+ "`Mem_ID` = '"+memberID+"'\r\n"
+				+ ");";
+		return sqlQuery;
+		
+	}else if (fNameAvailabe) {
+		fName = textField_Fname.getText();
+		
+		sqlQuery = "UPDATE `library_system`.`members` \r\n"
+				+ "SET \r\n"
+				+ "`F_name` = '"+fName+"'\r\n"
+				+ "WHERE (\r\n"
+				+ "`Mem_ID` = '"+memberID+"'\r\n"
+				+ ");";
+		return sqlQuery;
+		
+	}else if (lNameAvailabe) {
+		lName = textField_Lname.getText();
+		
+		sqlQuery = "UPDATE `library_system`.`members` \r\n"
+				+ "SET \r\n"
+				+ "`L_name` = '"+lName+"'\r\n"
+				+ "WHERE (\r\n"
+				+ "`Mem_ID` = '"+memberID+"'\r\n"
+				+ ");";
+		return sqlQuery;
+		
+		
+	}else if (contactNoAvailabe) {
+		conNo = textField_no.getText();
+		
+		sqlQuery = "UPDATE `library_system`.`members` \r\n"
+				+ "SET \r\n"
+				+ "`Contact_no` = '"+conNo+"'\r\n"
+				+ "WHERE (\r\n"
+				+ "`Mem_ID` = '"+memberID+"'\r\n"
+				+ ");";
+		return sqlQuery;
+		
+		
+	}else {
+		return sqlQuery;
+	}
+	
+	
+}
+
 	
 	
 
@@ -271,6 +451,15 @@ public class updateMemberUI extends JFrame {
 					public void mouseExited(MouseEvent e) {
 						panelSearch.setBackground(SystemColor.controlHighlight);
 					}
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						
+						if (memberValidationBoolean()) {
+							
+							showBookTable();
+							
+						}
+					}
 				});
 				panelSearch.setLayout(null);
 				panelSearch.setBackground(SystemColor.menu);
@@ -291,6 +480,34 @@ public class updateMemberUI extends JFrame {
 					@Override
 					public void mouseExited(MouseEvent e) {
 						panelUpdate.setBackground(UIManager.getColor("CheckBox.background"));
+					}
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						
+						memberID = textField_ID.getText();
+						
+						if (memberValidationBoolean()) {
+							
+							int result = JOptionPane.showConfirmDialog(null,
+				                    "Are your Sure! Do you want to Update This Member ID : "+memberID+"  ?",
+				                    "Confromation Message !",
+				                    JOptionPane.YES_NO_OPTION,
+				                    JOptionPane.WARNING_MESSAGE
+				                    );
+							
+							if (result == JOptionPane.YES_OPTION) {//take the confirmation from the user
+								
+								//System.out.println(sqlQuaryString());
+								
+								updateData(sqlQuaryString());
+								
+							}else {
+								JOptionPane.showMessageDialog(null, "Okay Data not Updated !");
+							}
+							
+						}
+						showBookTable();
+						
 					}
 				});
 				panelUpdate.setLayout(null);

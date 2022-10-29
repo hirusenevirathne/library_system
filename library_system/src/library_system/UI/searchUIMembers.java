@@ -77,6 +77,7 @@ public class searchUIMembers extends JFrame {
 						+ "Contact_no AS \"Contact Number\" \r\n"
 						+ "FROM \r\n"
 						+ "library_system.members;";
+				System.out.println(queryString);
 				PreparedStatement pStatement = connection.prepareStatement(queryString);
 				ResultSet rsResultset = pStatement.executeQuery(); 
 				table.setModel(DbUtils.resultSetToTableModel(rsResultset));
