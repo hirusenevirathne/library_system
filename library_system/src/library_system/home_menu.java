@@ -89,10 +89,16 @@ public class home_menu extends JFrame {
 		btnLogOut.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnLogOut.setBackground(SystemColor.controlHighlight);
 		btnLogOut.addActionListener(new ActionListener() {
-			@SuppressWarnings("deprecation")
+			//@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
-				logout logoutobj = new logout();
-				logoutobj.show(); //show the new window
+				//logout logoutobj = new logout();
+				//logoutobj.setVisible(true);
+				
+				
+				new login().setVisible(true);
+				
+				
+				//logoutobj.show(); //show the new window
 				//logoutobj.setVisible(true);
 				
 				//login logpageLogin = new login(); //create a object with login class

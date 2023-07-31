@@ -31,7 +31,7 @@ public class logout extends JFrame {
 	 * 
 	 */
 	
-	private JFrame frame;
+	
 	private JTextField textFieldusername;
 	private JTextField textFieldpassword;
 	
@@ -52,7 +52,7 @@ public class logout extends JFrame {
 			public void run() {
 				try {
 					logout window = new logout();
-					window.frame.setVisible(true);
+					window.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -78,16 +78,16 @@ public class logout extends JFrame {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 1297, 734);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		
+		setBounds(100, 100, 1297, 734);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		getContentPane().setLayout(null);
 		
 		JPanel background_panel = new JPanel();
 		background_panel.setBorder(null);
 		background_panel.setBackground(new Color(255, 255, 255));
 		background_panel.setBounds(0, 0, 1281, 695);
-		frame.getContentPane().add(background_panel);
+		getContentPane().add(background_panel);
 		background_panel.setLayout(null);
 		
 		JPanel topblue_panel = new JPanel();
@@ -162,7 +162,7 @@ public class logout extends JFrame {
 						//JOptionPane.showMessageDialog(null,"Username And Password is Valid !");
 						home_menu home_men = new home_menu();
 						home_men.setVisible(true);
-						frame.setVisible(false); //close the current frame
+						setVisible(false); //close the current frame
 						//((Connection) rsResultset).close(); //close the connection with database
 						pStatement.close(); //and let ohter method to access it
 						connection.close();

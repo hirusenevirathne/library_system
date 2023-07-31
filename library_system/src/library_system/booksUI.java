@@ -57,12 +57,21 @@ public class booksUI extends JFrame {
 	
 	Connection connection = null;
 	
+	
+	
+	
+	
+	
 	public void setColouronMouse( JPanel panel) { //create a method to change button color when mouse is on it
 		panel.setBackground(new java.awt.Color(115, 163, 239));		
 	}
 	public void reSetColouronMouse( JPanel panel) {//create a method to change original button color when mouse is not on it
 		panel.setBackground(SystemColor.controlHighlight);		
 	}
+	
+	
+	
+	
 	
 	
 	
@@ -100,6 +109,9 @@ public class booksUI extends JFrame {
 	
 	
 	
+	
+	
+	
 	/**
 	 * Create the frame.
 	 */
@@ -134,7 +146,7 @@ public class booksUI extends JFrame {
 		topblue_panel.add(lbllibrarysystem);
 		
 		//Back to Home Button 
-				JPanel homebtn = new JPanel();
+				JPanel homebtn = new JPanel();// HOme Button
 				homebtn.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseEntered(MouseEvent e) {
@@ -181,7 +193,7 @@ public class booksUI extends JFrame {
 				table = new JTable();
 				scrollPane.setViewportView(table);
 				
-				JComboBox<String> comboBoxSearchTable = new JComboBox<String>();
+				JComboBox<String> comboBoxSearchTable = new JComboBox<String>(); //combo box selection 
 				comboBoxSearchTable.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						
@@ -211,7 +223,7 @@ public class booksUI extends JFrame {
 				comboBoxSearchTable.setFont(new Font("Tahoma", Font.BOLD, 17));
 				comboBoxSearchTable.setBackground(SystemColor.window);
 				comboBoxSearchTable.setBounds(622, 173, 308, 47);
-				backgroundpanel.add(comboBoxSearchTable);
+				backgroundpanel.add(comboBoxSearchTable); //combo box drop down list
 				
 				
 				comboBoxSearchTable.addItem("Book ID");
